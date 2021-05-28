@@ -22,3 +22,7 @@ LeaveRequest/obj/LeaveRequest.csproj.nuget.g.targets
 LeaveRequest/obj/project.assets.json
 LeaveRequest/obj/project.nuget.cache
 *.cache
+LeaveRequest/obj/project.nuget.cache
+LeaveRequest/obj/project.assets.json
+LeaveRequest/obj/LeaveRequest.csproj.nuget.dgspec.json
+LeaveRequest/obj/Debug/netcoreapp3.1/LeaveRequest.assets.cache
