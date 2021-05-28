@@ -21,3 +21,4 @@ LeaveRequest/obj/LeaveRequest.csproj.nuget.g.props
 LeaveRequest/obj/LeaveRequest.csproj.nuget.g.targets
 LeaveRequest/obj/project.assets.json
 LeaveRequest/obj/project.nuget.cache
+*.cache
