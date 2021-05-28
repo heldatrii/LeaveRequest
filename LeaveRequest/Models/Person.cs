@@ -1,17 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace LeaveRequest.Models
 {
+    [Table("tb_m_person")]
     public class Person
     {
+        [Key]
+        [ForeignKey ("ManagerId")]
         public string NIK { get; set; }
+        public int IdDepartement { get; set; }
+        public int ManagerId { get; set; }
+        public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Email { get; set; }
         public DateTime BirthDate { get; set; }
         public string phone { get; set; }
-        public string UserName { get; set; }
+        [JsonIgnore]
+        public virtual Account Account { get; set; }
+        [JsonIgnore]
+        
     }
 }
