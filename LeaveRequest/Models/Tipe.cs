@@ -8,15 +8,12 @@ using System.Threading.Tasks;
 
 namespace LeaveRequest.Models
 {
-    [Table("tb_m_request")]
-    public class Request
+    [Table("tb_m_tipe")]
+    public class Tipe
     {
         [Key]
         public int Id { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        [JsonIgnore]
-        public virtual ICollection<RequestStatus> RequestStatuses { get; set; }
+        public string NameTipe { get; set; }
 
         [JsonIgnore]
         public virtual IList<RequestType> RequestTypes { get; set; }

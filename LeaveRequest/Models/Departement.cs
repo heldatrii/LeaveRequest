@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,7 +12,10 @@ namespace LeaveRequest.Models
     public class Departement
     {
         [Key]
+        [ForeignKey("Person")]
         public int Id { get; set; }
         public string Name { get; set; }
+        [JsonIgnore]
+        public virtual Person Person { get; set; }
     }
 }

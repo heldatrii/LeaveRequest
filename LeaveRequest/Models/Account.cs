@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,5 +15,10 @@ namespace LeaveRequest.Models
         [ForeignKey("Person")]
         public int NIK { get; set; }
         public string Password { get; set; }
+       [JsonIgnore]
+        public virtual Person Person { get; set; }
+        [JsonIgnore]
+        public virtual IList<RoleAccount> RoleAccounts { get; set; }
+
     }
 }
