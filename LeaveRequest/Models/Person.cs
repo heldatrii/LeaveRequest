@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace LeaveRequest.Models
@@ -12,7 +12,6 @@ namespace LeaveRequest.Models
     public class Person
     {
         [Key]
-        [ForeignKey ("ManagerId")]
         public string NIK { get; set; }
         public int IdDepartement { get; set; }
         public int ManagerId { get; set; }
@@ -25,6 +24,10 @@ namespace LeaveRequest.Models
         [JsonIgnore]
         public virtual Account Account { get; set; }
         [JsonIgnore]
-        
+        public virtual LeaveAllowance LeaveAllowance { get; set; }
+        [JsonIgnore]
+        public virtual Departement Departement { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<RequestStatus> RequestStatuses{ get; set; }
     }
 }
