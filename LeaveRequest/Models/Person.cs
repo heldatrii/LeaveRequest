@@ -15,12 +15,13 @@ namespace LeaveRequest.Models
         public string NIK { get; set; }
         public int IdDepartement { get; set; }
         public int ManagerId { get; set; }
+        public Person Manager { get; set; }
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
-        public string phone { get; set; }
+        public string Phone { get; set; }
         [JsonIgnore]
         public virtual Account Account { get; set; }
         [JsonIgnore]
