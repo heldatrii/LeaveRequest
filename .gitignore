@@ -47,3 +47,11 @@ LeaveRequest/appsettings.json
 LeaveRequest/obj/Debug/netcoreapp3.1/LeaveRequest.assets.cache
 LeaveRequest/obj/LeaveRequest.csproj.nuget.g.props
 *.props
+.vs/LeaveRequest/DesignTimeBuild/.dtbcache.v2
+LeaveRequest/Migrations/20210530051311_MigrationModels.cs
+LeaveRequest/Migrations/20210530051311_MigrationModels.Designer.cs
+LeaveRequest/Migrations/20210530123731_SelfJoin.cs
+LeaveRequest/obj/Debug/netcoreapp3.1/LeaveRequest.csprojAssemblyReference.cache
+LeaveRequest/Migrations/20210530123731_SelfJoin.Designer.cs
+.vs/LeaveRequest/DesignTimeBuild/.dtbcache.v2
+*.v2
