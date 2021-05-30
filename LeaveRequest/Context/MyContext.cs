@@ -22,5 +22,32 @@ namespace LeaveRequest.Context
         public DbSet<Role> Roles { get; set; }
         public DbSet<RoleAccount> RoleAccounts { get; set; }
         public DbSet<Tipe> Tipes { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //account ke role many to many 
+            modelBuilder.Entity<RoleAccount>()
+                .HasKey(ra => new { ra.IdAccount, ra.IdRole });
+            modelBuilder.Entity<RoleAccount>()
+                .HasOne(ra => ra.Account)
+                .WithMany(a => a.RoleAccounts)
+                .HasForeignKey(ra => ra.IdAccount);
+            modelBuilder.Entity<RoleAccount>()
+                .HasOne(ra => ra.Role)
+                .WithMany(r => r.RoleAccounts)
+                .HasForeignKey(ra => ra.IdRole);
+
+            //account ke role many to many 
+            modelBuilder.Entity<RequestType>()
+                .HasKey(rt => new { rt.IdRequest, rt.IdType });
+            modelBuilder.Entity<RequestType>()
+                .HasOne(rt => rt.Request)
+                .WithMany(b => b.RequestTypes)
+                .HasForeignKey(rt => rt.IdType);
+            modelBuilder.Entity<RequestType>()
+                .HasOne(rt => rt.Tipe)
+                .WithMany(b => b.RequestTypes)
+                .HasForeignKey(rt => rt.IdType);
+        }
+
     }
 }
