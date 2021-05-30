@@ -12,10 +12,9 @@ namespace LeaveRequest.Models
     public class Person
     {
         [Key]
-        public string NIK { get; set; }
+        public int NIK { get; set; }
         public int IdDepartement { get; set; }
         public int ManagerId { get; set; }
-        public Person Manager { get; set; }
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
