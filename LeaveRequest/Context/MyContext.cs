@@ -47,6 +47,12 @@ namespace LeaveRequest.Context
                 .HasOne(rt => rt.Tipe)
                 .WithMany(b => b.RequestTypes)
                 .HasForeignKey(rt => rt.IdType);
+
+            //selfjoin
+            modelBuilder.Entity<Person>()
+                .HasMany(p => p.subPerson)
+                .WithOne(p => p.ParentPerson)
+                .HasForeignKey(p => p.ManagerId);
         }
 
     }
