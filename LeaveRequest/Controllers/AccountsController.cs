@@ -167,5 +167,178 @@ namespace LeaveRequest.Controllers
                 return StatusCode(404, new { status = HttpStatusCode.NotFound, message = "Email Not Found" });
             }
         }
+
+        [HttpGet("ApplyList")]
+        public async Task<IActionResult> ApplyList()
+        {
+            var data = await (
+                from departement in myContext.Departements
+                join person in myContext.Persons
+                on departement.Id equals person.IdDepartement
+                join requestStatus in myContext.RequestStatuses
+                on person.NIK equals requestStatus.NIK
+                join request in myContext.Requests
+                on requestStatus.IdRequest equals request.Id
+                join requestType in myContext.RequestTypes
+                on request.Id equals requestType.IdRequest
+                select new
+                {
+                    NIK = person.NIK,
+                    IdDepartement = person.IdDepartement,
+                    DepartementName = departement.Name,
+                    ManagerId = person.ManagerId,
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+                    Email = person.Email,
+                    BirthDate = person.BirthDate,
+                    Phone = person.Phone,
+                    IdRequest = requestStatus.IdRequest,
+                    Status = requestStatus.Status,
+                    StartDate = request.StartDate,
+                    EndDate = request.EndDate,
+                    IdType = requestType.IdType
+                }
+                ).ToListAsync();
+            return Ok(data);
+        }
+
+        [HttpPost("Apply")]
+        public IActionResult Apply(ApplyVM applyVM)
+        {
+            try
+            {
+                Request request = new Request();
+                request.StartDate = applyVM.StartDate;
+                request.EndDate = applyVM.EndDate;
+                myContext.Requests.Add(request);
+                myContext.SaveChanges();
+
+                try
+                {
+                    RequestType requestType = new RequestType();
+                    requestType.IdType = applyVM.IdType;
+                    requestType.IdRequest = myContext.Requests.Select(r => r.Id).Max();
+                    myContext.RequestTypes.Add(requestType);
+                    myContext.SaveChanges();
+
+                    try
+                    {
+                        RequestStatus requestStatus = new RequestStatus();
+                        requestStatus.NIK = applyVM.NIK;
+                        requestStatus.IdRequest = myContext.Requests.Select(r => r.Id).Max();
+                        requestStatus.Status = "Unprocessed";
+                        myContext.RequestStatuses.Add(requestStatus);
+                        myContext.SaveChanges();
+
+                        return Ok("Apply was successfully");
+                    }
+                    catch (Exception)
+                    {
+                        var delRequestType = myContext.RequestTypes.Find(applyVM.IdType);
+                        myContext.RequestTypes.Remove(delRequestType);
+                        var resultRType = myContext.SaveChanges();
+
+                        var delRequestStatus = myContext.RequestStatuses.Find(applyVM.NIK);
+                        myContext.RequestStatuses.Remove(delRequestStatus);
+                        var resultRStatus = myContext.SaveChanges();
+
+                        return StatusCode(405, new { status = HttpStatusCode.MethodNotAllowed, message = "..." });
+                        throw;
+
+                    }
+                }
+                catch (Exception)
+                {
+                    var delRequest = myContext.Requests.Find(myContext.Requests.Select(r => r.Id).Max());
+                    myContext.Requests.Remove(delRequest);
+                    var resultRequest = myContext.SaveChanges();
+
+
+                    return StatusCode(405, new { status = HttpStatusCode.MethodNotAllowed, message = "..." });
+                    throw;
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(400, new { status = HttpStatusCode.MethodNotAllowed, message = "Bad Request" });
+                throw;
+            }
+        }
+
+        [HttpPost("ChangePassword")]
+        public IActionResult ChangePassword(ChangePasswordVM changePasswordVM)
+        {
+            var person = myContext.Persons.FirstOrDefault(p => p.Email == changePasswordVM.Email);
+            if (person != null)
+            {
+                var account = myContext.Accounts.FirstOrDefault(acc => acc.NIK == person.NIK);
+                if (account != null && Hashing.VerifyPassword(changePasswordVM.OldPassword, account.Password))
+                {
+                    Account newAccount = new Account();
+                    newAccount = myContext.Accounts.Find(person.NIK);
+                    newAccount.NIK = account.NIK;
+                    newAccount.Password = Hashing.HashPassword(changePasswordVM.NewPassword);
+                    myContext.Accounts.Update(newAccount);
+                    myContext.SaveChanges();
+                    return Ok("Password Updated");
+                }
+                else
+                {
+                    return StatusCode(404, new { status = HttpStatusCode.NotFound, message = "Wrong Password" });
+                }
+            }
+            else
+            {
+                return StatusCode(404, new { status = HttpStatusCode.NotFound, message = "Email Not Found" });
+            }
+        }
+
+        public string RandomString()
+        {
+            Random r = new Random();
+            string[] ran = new string[8];
+            string alphaNumeric = "abcdefghijklmnopqrstuvwxyz1234567890";
+            char[] ch = new char[alphaNumeric.Length];
+
+
+            for (int i = 0; i < alphaNumeric.Length; i++)
+            {
+                ch[i] = alphaNumeric[i];
+            }
+
+            for (int i = 0; i < 8; i++)
+            {
+                int rInt = r.Next(0, alphaNumeric.Length - 1);
+                ran[i] = Convert.ToString(ch[rInt]);
+            }
+
+            return $"{ran[0]}{ran[1]}{ran[2]}{ran[3]}{ran[4]}{ran[5]}{ran[6]}{ran[7]}";
+        }
+
+        [HttpPost("ForgotPassword")]
+        public IActionResult ForgotPassword(ForgotPasswordVM forgotPasswordVM)
+        {
+            var newPass = RandomString();
+            Person person = myContext.Persons.Where(p => p.Email == forgotPasswordVM.Email).FirstOrDefault();
+            if (person != null)
+            {
+                Account newAccount = myContext.Accounts.Find(person.NIK);
+                newAccount.NIK = newAccount.NIK;
+                newAccount.Password = Hashing.HashPassword(newPass);
+                myContext.Accounts.Update(newAccount);
+                myContext.SaveChanges();
+                var client = new SmtpClient("smtp.gmail.com", 587)
+                {
+                    Credentials = new NetworkCredential("hidgastg@gmail.com", ""),
+                    EnableSsl = true
+                };
+                client.Send("hidgastg@gmail.com", forgotPasswordVM.Email, "RESET PASSWORD REQUEST", $"Hello {person.FirstName} {person.LastName} \nHere is Your New Password : {newPass}");
+                return Ok("Request Sent");
+            }
+            else
+            {
+                return NotFound("Email Not Found");
+            }
+        }
     }
 }
