@@ -123,8 +123,7 @@ namespace LeaveRequest.Controllers
             }
             catch (Exception)
             {
-
-                throw;
+                return StatusCode(400, new { status = HttpStatusCode.MethodNotAllowed, message = "Bad Request" });
             }
         }
     }
