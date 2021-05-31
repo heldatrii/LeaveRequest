@@ -64,10 +64,9 @@ namespace LeaveRequest.Migrations
                 name: "tb_m_person",
                 columns: table => new
                 {
-                    NIK = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NIK = table.Column<string>(nullable: false),
                     IdDepartement = table.Column<int>(nullable: false),
-                    ManagerId = table.Column<int>(nullable: true),
+                    ManagerId = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
@@ -121,7 +120,7 @@ namespace LeaveRequest.Migrations
                 name: "tb_m_account",
                 columns: table => new
                 {
-                    NIK = table.Column<int>(nullable: false),
+                    NIK = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -139,7 +138,7 @@ namespace LeaveRequest.Migrations
                 name: "tb_m_leaveAllowance",
                 columns: table => new
                 {
-                    NIK = table.Column<int>(nullable: false),
+                    NIK = table.Column<string>(nullable: false),
                     LeaveAllow = table.Column<int>(nullable: false),
                     UsedLeaveAllow = table.Column<int>(nullable: false)
                 },
@@ -158,7 +157,7 @@ namespace LeaveRequest.Migrations
                 name: "tb_m_requestStatus",
                 columns: table => new
                 {
-                    NIK = table.Column<int>(nullable: false),
+                    NIK = table.Column<string>(nullable: false),
                     IdRequest = table.Column<int>(nullable: false),
                     Status = table.Column<string>(nullable: true)
                 },
@@ -183,7 +182,7 @@ namespace LeaveRequest.Migrations
                 name: "tb_m_roleaccount",
                 columns: table => new
                 {
-                    NIK = table.Column<int>(nullable: false),
+                    NIK = table.Column<string>(nullable: false),
                     IdRole = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
