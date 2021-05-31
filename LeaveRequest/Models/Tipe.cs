@@ -16,7 +16,7 @@ namespace LeaveRequest.Models
         public string NameTipe { get; set; }
 
         [JsonIgnore]
-        public virtual IList<RequestType> RequestTypes { get; set; }
+        public virtual ICollection<RequestType> RequestTypes { get; set; }
 
     }
 }
