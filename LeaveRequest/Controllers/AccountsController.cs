@@ -19,6 +19,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Security.Claims;
 using LeaveRequest.ViewModel;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace LeaveRequest.Controllers
 {
@@ -124,6 +125,46 @@ namespace LeaveRequest.Controllers
             catch (Exception)
             {
                 return StatusCode(400, new { status = HttpStatusCode.MethodNotAllowed, message = "Bad Request" });
+            }
+        }
+
+        [HttpPost("Login")]
+        public IActionResult Login(LoginVM loginVM)
+        {
+            var person = myContext.Persons.FirstOrDefault(p => p.Email == loginVM.Email);
+            if (person != null)
+            {
+                var account = myContext.Accounts.FirstOrDefault(p => p.NIK == person.NIK);
+                if (account != null && Hashing.VerifyPassword(loginVM.Password, account.Password))
+                {
+                    var roleAccount = myContext.RoleAccounts.Where(ra => ra.NIK == account.NIK).ToList();
+                    var claims = new List<Claim> {
+                    new Claim("NIK", person.NIK),
+                    new Claim("FirstName", person.FirstName),
+                    new Claim("LastName", person.LastName),
+                    new Claim("Email", person.Email)
+                    };
+                    foreach (var item in roleAccount)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, myContext.Roles.Where(r => r.Id == item.IdRole).FirstOrDefault().NameRole));
+                    }
+
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+
+                    var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                    var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"], claims, expires: DateTime.UtcNow.AddMinutes(10), signingCredentials: signIn);
+
+                    return StatusCode(200, new { status = HttpStatusCode.OK, message = "", person.Email, token = new JwtSecurityTokenHandler().WriteToken(token) });
+                }
+                else
+                {
+                    return StatusCode(404, new { status = HttpStatusCode.NotFound, message = "Wrong Password" });
+                }
+            }
+            else
+            {
+                return StatusCode(404, new { status = HttpStatusCode.NotFound, message = "Email Not Found" });
             }
         }
     }
