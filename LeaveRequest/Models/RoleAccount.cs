@@ -10,7 +10,7 @@ namespace LeaveRequest.Models
     [Table("tb_m_roleaccount")]
     public class RoleAccount
     {
-        public int NIK { get; set; }
+        public string NIK { get; set; }
 
         [JsonIgnore]
         public virtual Account Account { get; set; }

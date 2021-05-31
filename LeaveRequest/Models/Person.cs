@@ -17,9 +17,12 @@ namespace LeaveRequest.Models
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int NIK { get; set; }
+        public string NIK { get; set; }
+        [ForeignKey("Departement")]
         public int IdDepartement { get; set; }
-        public int? ManagerId { get; set; }
+        [JsonIgnore]
+        public virtual Departement Departement { get; set; }
+        public string? ManagerId { get; set; }
         [JsonIgnore]
         public virtual Person ParentPerson { get; set; }
         public string UserName { get; set; }
@@ -34,8 +37,6 @@ namespace LeaveRequest.Models
         public virtual Account Account { get; set; }
         [JsonIgnore]
         public virtual LeaveAllowance LeaveAllowance { get; set; }
-        [JsonIgnore]
-        public virtual Departement Departement { get; set; }
         [JsonIgnore]
         public virtual ICollection<RequestStatus> RequestStatuses{ get; set; }
     }

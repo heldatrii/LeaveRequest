@@ -24,7 +24,7 @@ namespace LeaveRequest.Controllers
     [ApiController]
     [EnableCors("AllowOrigin")]
     [Consumes("application/json")]
-    public class AccountsController : BaseController<Account, AccountRepository, int>
+    public class AccountsController : BaseController<Account, AccountRepository, string>
     {
         private readonly AccountRepository accountRepository;
         private readonly MyContext myContext;

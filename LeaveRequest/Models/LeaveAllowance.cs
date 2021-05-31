@@ -13,7 +13,7 @@ namespace LeaveRequest.Models
     {
         [Key]
         [ForeignKey("Person")]
-        public int NIK { get; set; }
+        public string NIK { get; set; }
         public int LeaveAllow { get; set; }
         public int UsedLeaveAllow { get; set; }
         [JsonIgnore]

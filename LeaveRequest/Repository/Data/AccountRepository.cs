@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LeaveRequest.Repository.Data
 {
-    public class AccountRepository : GeneralRepository<MyContext, Account, int>
+    public class AccountRepository : GeneralRepository<MyContext, Account, string>
     {
         public AccountRepository(MyContext conn) : base(conn)
         {
