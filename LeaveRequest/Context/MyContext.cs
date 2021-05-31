@@ -26,17 +26,17 @@ namespace LeaveRequest.Context
         {
             //account ke role many to many 
             modelBuilder.Entity<RoleAccount>()
-                .HasKey(ra => new { ra.IdAccount, ra.IdRole });
+                .HasKey(ra => new { ra.NIK, ra.IdRole });
             modelBuilder.Entity<RoleAccount>()
                 .HasOne(ra => ra.Account)
                 .WithMany(a => a.RoleAccounts)
-                .HasForeignKey(ra => ra.IdAccount);
+                .HasForeignKey(ra => ra.NIK);
             modelBuilder.Entity<RoleAccount>()
                 .HasOne(ra => ra.Role)
                 .WithMany(r => r.RoleAccounts)
                 .HasForeignKey(ra => ra.IdRole);
 
-            //account ke role many to many 
+            //request ke tipe many to many 
             modelBuilder.Entity<RequestType>()
                 .HasKey(rt => new { rt.IdRequest, rt.IdType });
             modelBuilder.Entity<RequestType>()
@@ -47,6 +47,18 @@ namespace LeaveRequest.Context
                 .HasOne(rt => rt.Tipe)
                 .WithMany(b => b.RequestTypes)
                 .HasForeignKey(rt => rt.IdType);
+            
+            //person ke request many to many 
+            modelBuilder.Entity<RequestStatus>()
+                .HasKey(rt => new { rt.IdRequest, rt.NIK });
+            modelBuilder.Entity<RequestStatus>()
+                .HasOne(rt => rt.Person)
+                .WithMany(b => b.RequestStatuses)
+                .HasForeignKey(rt => rt.NIK);
+            modelBuilder.Entity<RequestStatus>()
+                .HasOne(rt => rt.Request)
+                .WithMany(b => b.RequestStatuses)
+                .HasForeignKey(rt => rt.IdRequest);
 
             //selfjoin
             modelBuilder.Entity<Person>()

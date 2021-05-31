@@ -11,14 +11,11 @@ namespace LeaveRequest.Models
     [Table("tb_m_requestStatus")]
     public class RequestStatus
     {
-        [Key]
-        public int IdPerson { get; set; }
-        public int IdRequestS { get; set; }
-        public string Status { get; set; }
-        [JsonIgnore]
+        public int NIK { get; set; }
         public virtual Person Person { get; set; }
-        [JsonIgnore]
+        public int IdRequest { get; set; }
         public virtual Request Request { get; set; }
+        public string Status { get; set; }
 
     }
 }

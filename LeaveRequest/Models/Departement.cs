@@ -16,6 +16,6 @@ namespace LeaveRequest.Models
         public int Id { get; set; }
         public string Name { get; set; }
         [JsonIgnore]
-        public virtual Person Person { get; set; }
+        public virtual ICollection<Person> Persons { get; set; }
     }
 }
