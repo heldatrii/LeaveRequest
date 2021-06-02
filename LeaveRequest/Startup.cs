@@ -142,6 +142,8 @@ namespace LeaveRequest
 
             app.UseRouting();
 
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             //app.UseCors();
