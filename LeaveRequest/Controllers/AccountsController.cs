@@ -168,6 +168,7 @@ namespace LeaveRequest.Controllers
             }
         }
 
+        [Authorize(Roles = "Manager")]
         [HttpGet("ApplyList")]
         public async Task<IActionResult> ApplyList()
         {
@@ -323,7 +324,7 @@ namespace LeaveRequest.Controllers
             if (person != null)
             {
                 Account newAccount = myContext.Accounts.Find(person.NIK);
-                newAccount.NIK = newAccount.NIK;
+                newAccount.NIK = person.NIK;
                 newAccount.Password = Hashing.HashPassword(newPass);
                 myContext.Accounts.Update(newAccount);
                 myContext.SaveChanges();
