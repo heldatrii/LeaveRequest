@@ -205,7 +205,7 @@ namespace LeaveRequest.Controllers
                 ).ToListAsync();
             return Ok(data);
         }
-        
+
         //Fungsi untuk menampilkan data apply pegawai tertentu
         //[Authorize]
         [HttpGet("ApplyListID/{NIK}")]
@@ -306,7 +306,7 @@ namespace LeaveRequest.Controllers
                 {
                     NIK = person.NIK,
                     IdDepartement = person.IdDepartement,
-                    DepartementName = departement.Name,
+                    DepartmentName = departement.Name,
                     ManagerId = person.ManagerId,
                     FirstName = person.FirstName,
                     LastName = person.LastName,
@@ -318,7 +318,7 @@ namespace LeaveRequest.Controllers
                     StartDate = request.StartDate,
                     EndDate = request.EndDate,
                     IdType = requestType.IdType,
-                    Type = type.NameTipe
+                    Reason = type.NameTipe
                 }
                 ).FirstOrDefault();
             return Ok(data);

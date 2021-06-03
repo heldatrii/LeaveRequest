@@ -111,7 +111,7 @@ function Apply() {
 function clearTextBox() {
     document.getElementById("NIK").readOnly = true;
     $('#crudModalLabel').html("Insert New Data");
-    $('#NIK').val("123452");
+    $('#NIK').val("123452"); //ganti dengan NIK session
     $('#StartDate').val("");
     $('#EndDate').val("");
     $('#IdType').val("");
@@ -122,12 +122,12 @@ function clearTextBox() {
     $('#IdType').css('border-color', 'lightgrey');
 }
 
-function Add() {
+function addLeaveApply() {
     var obj = new Object();
     obj.NIK = $('#NIK').val();
     obj.FirstName = $('#StartDate').val();
     obj.LastName = $('#EndDate').val();
-    obj.Phone = $('#IdType').val();
+    obj.IdType = $('#IdType').val();
     $.ajax({
         url: "https://localhost:44313/API/Accounts/Apply",
         data: JSON.stringify(obj),
@@ -137,14 +137,14 @@ function Add() {
         success: function (result) {
             console.log(result);
             //alert(result);
-            $('#crud').modal('hide');
+            $('#addrequest').modal('hide');
             Swal.fire({
                 icon: 'success',
                 title: 'Success',
                 text: 'Insert Data Berhasil',
                 footer: '<a href>GOOD</a>'
             })
-            $('#example').DataTable().ajax.reload();
+            $('#apply').DataTable().ajax.reload();
         },
         error: function (errormessage) {
 
@@ -152,3 +152,18 @@ function Add() {
         }
     });
 }
+
+$.ajax({
+    url: "https://localhost:44313/API/Types"
+}).done((result) => {
+    console.log(result);
+    //console.log(result.results);
+    var text = "";
+    $.each(result, function (key, val) {
+        text += `<option value="${val.id}">${val.nameTipe}</option>`
+        //text += `<li>${val.name}</li>`
+    });
+    $("#IdType").html(text);
+}).fail((error) => {
+    console.log(error);
+});
