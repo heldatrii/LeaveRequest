@@ -182,6 +182,8 @@ namespace LeaveRequest.Controllers
                 on requestStatus.IdRequest equals request.Id
                 join requestType in myContext.RequestTypes
                 on request.Id equals requestType.IdRequest
+                join tipe in myContext.Tipes 
+                on requestType.IdRequest equals tipe.Id
                 select new
                 {
                     NIK = person.NIK,
@@ -197,9 +199,47 @@ namespace LeaveRequest.Controllers
                     Status = requestStatus.Status,
                     StartDate = request.StartDate,
                     EndDate = request.EndDate,
-                    IdType = requestType.IdType
+                    IdType = requestType.IdType,
+                    Type = tipe.NameTipe
+
                 }
                 ).ToListAsync();
+            return Ok(data);
+        }
+        
+        [HttpGet("ApplyBy/{NIK}")]
+        public IActionResult ApplyBy(string NIK)
+        {
+            var data = (
+                from departement in myContext.Departements
+                join person in myContext.Persons
+                on departement.Id equals person.IdDepartement
+                join requestStatus in myContext.RequestStatuses
+                on person.NIK equals requestStatus.NIK
+                join request in myContext.Requests
+                on requestStatus.IdRequest equals request.Id
+                join requestType in myContext.RequestTypes
+                on request.Id equals requestType.IdRequest
+                where person.NIK == NIK
+                select new
+                {
+                    NIK = person.NIK,
+                    IdDepartement = person.IdDepartement,
+                    DepartementName = departement.Name,
+                    ManagerId = person.ManagerId,
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+                    Email = person.Email,
+                    BirthDate = person.BirthDate,
+                    Phone = person.Phone,
+                    IdRequest = requestStatus.IdRequest,
+                    Status = requestStatus.Status,
+                    StartDate = request.StartDate,
+                    EndDate = request.EndDate,
+                    IdType = requestType.IdType,
+
+                }
+                ).FirstOrDefault();
             return Ok(data);
         }
 
