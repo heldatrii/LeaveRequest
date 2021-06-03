@@ -168,7 +168,7 @@ namespace LeaveRequest.Controllers
             }
         }
 
-        //[Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         [HttpGet("ApplyList")]
         public async Task<IActionResult> ApplyList()
         {

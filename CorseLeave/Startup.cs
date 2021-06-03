@@ -1,3 +1,5 @@
+using CorseLeave.Base;
+using CorseLeave.Repository.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,6 +26,9 @@ namespace CorseLeave
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddScoped<AccountRepository>();
+            services.AddScoped<Address>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
