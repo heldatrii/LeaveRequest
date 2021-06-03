@@ -2,7 +2,7 @@
     var table = $('#applyList').DataTable({
         dom: 'lBfrtip',
         ajax: {
-            "url": "https://localhost:44313/API/Accounts/ApplyList",
+            "url": "https://localhost:44313/API/Accounts/ApplyListManager/"+"123451",
             "datatype": "json",
             "dataSrc": ""
         },
@@ -89,3 +89,47 @@
     //    });
     //}).draw();
 });
+
+
+function detailLeaveApply(requestID) {
+    $.ajax({
+        url: "https://localhost:44338/API/Accounts/ApplyDetail/" + requestID
+    }).done((result) => {
+        var ability = "";
+        console.log(result);
+        var text = `<ul>
+                        <li>
+                            Name      : ${result.firstName} ${result.lastName} 
+                        </li>
+                        <li>
+                            NIK       : ${result.nik} 
+                        </li>
+                        <li>
+                            Phone     : ${result.departementName}
+                        </li>
+                        <li>
+                            Birthdate : ${result.email}
+                        </li>
+                        <li>
+                            Salary    : ${result.phone} 
+                        </li>
+                        <li>
+                            Email     : ${result.email} 
+                        </li>
+                        <li>
+                            Degree     : ${result.degree} 
+                        </li>
+                        <li>
+                            GPA        : ${result.gpa} 
+                        </li>
+                        <li>
+                            University : ${result.universityName} 
+                        </li>
+                    </ul>`
+        $('#exampleModalLabel').html(result.firstName + ' ' + result.lastName);
+        $('#modal-body-detail').html(text);
+        $('#exampleModal').modal('show');
+    }).fail((error) => {
+        console.log(error);
+    });
+}

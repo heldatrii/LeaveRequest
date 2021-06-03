@@ -2,3 +2,136 @@
     ViewData["Title"] = "Home";
     Layout = "~/Views/Shared/_LayoutEmployee.cshtml";
 }
+
+
+<h1>Ini Halaman Employee</h1>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#crud" onclick="clearTextBox();">Add New Employee</button>
+<!-- Modal -->
+<div class="modal fade" id="crud" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 1000px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="crudModalLabel" style="text-transform:uppercase"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body-form">
+                @*<form class="needs-validation" id="form" action="javascript:addOrUpdate()">*@
+                <form class="needs-validation" id="form" action="javascript:addOrUpdate()">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="EmployeeId">NIK</label>
+                                <input type="text" class="form-control" id="NIK" placeholder="NIK" required />
+                            </div>
+                            <div class="NIK"></div>
+                            <div class="form-group">
+                                <label for="Name">First Name</label>
+                                <input type="text" class="form-control" id="FirstName" placeholder="First Name" required />
+                            </div>
+                            <div class="FirstName"></div>
+                            <div class="form-group">
+                                <label for="Age">Last Name</label>
+                                <input type="text" class="form-control" id="LastName" placeholder="Last Name" required />
+                            </div>
+                            <div class="LastName"></div>
+                            <div class="form-group">
+                                <label for="State">Phone</label>
+                                <input type="text" class="form-control" id="Phone" placeholder="Phone" required />
+                            </div>
+                            <div class="Phone"></div>
+                            <div class="form-group">
+                                <label for="Country">Birth Date</label>
+                                <input type="date" class="form-control" id="BirthDate" placeholder="Birth Date (yyyy-mm-dd)" required />
+                            </div>
+                            <div class="BirthDate"></div>
+                            <div class="form-group">
+                                <label for="Country">Salary</label>
+                                <input type="text" class="form-control" id="Salary" placeholder="Salary" required />
+                            </div>
+                            <div class="Salary"></div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="Country">Email</label>
+                                <input type="email" class="form-control" id="Email" placeholder="Email" required />
+                            </div>
+                            <div class="Email"></div>
+                            <div class="form-group" id="passwordDiv">
+                                <label for="Country">Passwrod</label>
+                                <input type="password" class="form-control" id="Password" pattern="[a-zA-Z0-9]+" minlength="8" placeholder="Password" required />
+                            </div>
+                            <div class="Password"></div>
+                            <div class="form-group">
+                                <label for="Country">Degree</label>
+                                <input type="text" class="form-control" id="Degree" placeholder="Degree" required />
+                            </div>
+                            <div class="Degree"></div>
+                            <div class="form-group">
+                                <label for="Country">GPA</label>
+                                <input type="text" class="form-control" id="GPA" placeholder="GPA" required />
+                            </div>
+                            <div class="GPA"></div>
+                            <div class="form-group">
+                                <label for="Country">University</label>
+                                @*<input type="text" class="form-control" id="GPA" placeholder="GPA" />*@
+                                <select class="form-control" name="University" id="UniversityId" placeholder="University"></select>
+                            </div>
+                            <div class="University"></div>
+                        </div>
+                    </div>
+
+
+                    <input type="submit" value="add" id="btnAdd" class="form-control formButton" name="add" placeholder="Add" />
+                    <input type="submit" value="update" id="btnUpdate" style="display:none;" class="form-control formButton" name="update" placeholder="Add" />
+                    @*<input class="form-control" name="Submit" type="submit" value="Update"/>*@
+                    @*<button type="submit" class="btn btn-primary" form="form" id="btnAdd" onclick="return Add();">Submit</button>*@
+                </form>
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-primary" form="form" id="btnAdd" onclick="return Add();">Add</button>*@
+                @*<button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>*@
+
+                @*TIDAK TERPAKAI*@
+                @*<button type="submit" class="btn btn-primary" form="form" id="btnAdd" onclick="return Add();">Add</button>*@
+                @*<button type="submit" class="btn btn-primary" form="form" id="btnAdd">Add</button>*@
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <table id="apply" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>NIK</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th style="width: 300px;">Action</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>No</th>
+                    <th>NIK</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th style="width: 300px;">Action</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<section>
+    <canvas id="myChart" width="400" height="400"></canvas>
+</section>

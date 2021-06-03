@@ -182,6 +182,8 @@ namespace LeaveRequest.Controllers
                 on requestStatus.IdRequest equals request.Id
                 join requestType in myContext.RequestTypes
                 on request.Id equals requestType.IdRequest
+                join type in myContext.Tipes
+                on requestType.IdType equals type.Id
                 select new
                 {
                     NIK = person.NIK,
@@ -197,9 +199,128 @@ namespace LeaveRequest.Controllers
                     Status = requestStatus.Status,
                     StartDate = request.StartDate,
                     EndDate = request.EndDate,
-                    IdType = requestType.IdType
+                    IdType = requestType.IdType,
+                    Type = type.NameTipe
                 }
                 ).ToListAsync();
+            return Ok(data);
+        }
+        
+        //Fungsi untuk menampilkan data apply pegawai tertentu
+        //[Authorize]
+        [HttpGet("ApplyListID/{NIK}")]
+        public async Task<IActionResult> ApplyListID(string NIK)
+        {
+            var data = await (
+                from departement in myContext.Departements
+                join person in myContext.Persons
+                on departement.Id equals person.IdDepartement
+                join requestStatus in myContext.RequestStatuses
+                on person.NIK equals requestStatus.NIK
+                join request in myContext.Requests
+                on requestStatus.IdRequest equals request.Id
+                join requestType in myContext.RequestTypes
+                on request.Id equals requestType.IdRequest
+                join type in myContext.Tipes
+                on requestType.IdType equals type.Id
+                where person.NIK == NIK
+                select new
+                {
+                    NIK = person.NIK,
+                    IdDepartement = person.IdDepartement,
+                    DepartementName = departement.Name,
+                    ManagerId = person.ManagerId,
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+                    Email = person.Email,
+                    BirthDate = person.BirthDate,
+                    Phone = person.Phone,
+                    IdRequest = requestStatus.IdRequest,
+                    Status = requestStatus.Status,
+                    StartDate = request.StartDate,
+                    EndDate = request.EndDate,
+                    IdType = requestType.IdType,
+                    Type = type.NameTipe
+                }
+                ).ToListAsync();
+            return Ok(data);
+        }
+        
+        //fungsi untuk menampilkan data apply manager tertentu
+        //[Authorize]
+        [HttpGet("ApplyListManager/{managerId}")]
+        public async Task<IActionResult> ApplyListManager(string managerId)
+        {
+            var data = await (
+                from departement in myContext.Departements
+                join person in myContext.Persons
+                on departement.Id equals person.IdDepartement
+                join requestStatus in myContext.RequestStatuses
+                on person.NIK equals requestStatus.NIK
+                join request in myContext.Requests
+                on requestStatus.IdRequest equals request.Id
+                join requestType in myContext.RequestTypes
+                on request.Id equals requestType.IdRequest
+                join type in myContext.Tipes
+                on requestType.IdType equals type.Id
+                where person.ManagerId == managerId
+                select new
+                {
+                    NIK = person.NIK,
+                    IdDepartement = person.IdDepartement,
+                    DepartementName = departement.Name,
+                    ManagerId = person.ManagerId,
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+                    Email = person.Email,
+                    BirthDate = person.BirthDate,
+                    Phone = person.Phone,
+                    IdRequest = requestStatus.IdRequest,
+                    Status = requestStatus.Status,
+                    StartDate = request.StartDate,
+                    EndDate = request.EndDate,
+                    IdType = requestType.IdType,
+                    Type = type.NameTipe
+                }
+                ).ToListAsync();
+            return Ok(data);
+        }
+        
+        [HttpGet("ApplyDetail/{requestID}")]
+        public IActionResult ApplyDetail(int requestID)
+        {
+            var data = (
+                from departement in myContext.Departements
+                join person in myContext.Persons
+                on departement.Id equals person.IdDepartement
+                join requestStatus in myContext.RequestStatuses
+                on person.NIK equals requestStatus.NIK
+                join request in myContext.Requests
+                on requestStatus.IdRequest equals request.Id
+                join requestType in myContext.RequestTypes
+                on request.Id equals requestType.IdRequest
+                join type in myContext.Tipes
+                on requestType.IdType equals type.Id
+                where request.Id == requestID
+                select new
+                {
+                    NIK = person.NIK,
+                    IdDepartement = person.IdDepartement,
+                    DepartementName = departement.Name,
+                    ManagerId = person.ManagerId,
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+                    Email = person.Email,
+                    BirthDate = person.BirthDate,
+                    Phone = person.Phone,
+                    IdRequest = requestStatus.IdRequest,
+                    Status = requestStatus.Status,
+                    StartDate = request.StartDate,
+                    EndDate = request.EndDate,
+                    IdType = requestType.IdType,
+                    Type = type.NameTipe
+                }
+                ).FirstOrDefault();
             return Ok(data);
         }
 
