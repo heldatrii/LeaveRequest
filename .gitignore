@@ -58,3 +58,5 @@ LeaveRequest/Migrations/20210530123731_SelfJoin.Designer.cs
 /CorseLeave/obj
 /CorseLeave/bin
 /LeaveRequest/appsettings.json
+/LeaveRequest/obj
+/LeaveRequest/obj

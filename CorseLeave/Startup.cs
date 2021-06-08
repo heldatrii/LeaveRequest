@@ -2,6 +2,7 @@ using CorseLeave.Base;
 using CorseLeave.Repository.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +29,17 @@ namespace CorseLeave
             services.AddControllersWithViews();
 
             services.AddScoped<AccountRepository>();
+            services.AddScoped<DepartementRepository>();
+            services.AddScoped<LeaveAllowanceRepository>();
+            services.AddScoped<PersonRepository>();
+            services.AddScoped<RequestRepository>();
+            services.AddScoped<RequestStatusRepository>();
+            services.AddScoped<RequestTypeRepository>();
+            services.AddScoped<RoleAccountRepository>();
+            services.AddScoped<RoleRepository>();
+            services.AddScoped<TypeRepository>();
             services.AddScoped<Address>();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +60,19 @@ namespace CorseLeave
 
             app.UseRouting();
 
+            app.UseSession();
+
+            app.Use(async (context, next) =>
+            {
+                var JWToken = context.Session.GetString("JWToken");
+                if (!string.IsNullOrEmpty(JWToken))
+                {
+                    context.Request.Headers.Add("Authorizatoin", "Bearer" + JWToken);
+                }
+                await next();
+            });
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

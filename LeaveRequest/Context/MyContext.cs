@@ -38,19 +38,19 @@ namespace LeaveRequest.Context
 
             //request ke tipe many to many 
             modelBuilder.Entity<RequestType>()
-                .HasKey(rt => new { rt.IdRequest, rt.IdType });
+                .HasKey(rt => new { rt.RequestId, rt.TipeId });
             modelBuilder.Entity<RequestType>()
                 .HasOne(rt => rt.Request)
                 .WithMany(b => b.RequestTypes)
-                .HasForeignKey(rt => rt.IdType);
+                .HasForeignKey(rt => rt.RequestId);
             modelBuilder.Entity<RequestType>()
                 .HasOne(rt => rt.Tipe)
                 .WithMany(b => b.RequestTypes)
-                .HasForeignKey(rt => rt.IdType);
+                .HasForeignKey(rt => rt.TipeId);
             
             //person ke request many to many 
             modelBuilder.Entity<RequestStatus>()
-                .HasKey(rt => new { rt.IdRequest, rt.NIK });
+                .HasKey(rt => new { rt.RequestId, rt.NIK });
             modelBuilder.Entity<RequestStatus>()
                 .HasOne(rt => rt.Person)
                 .WithMany(b => b.RequestStatuses)
@@ -58,7 +58,7 @@ namespace LeaveRequest.Context
             modelBuilder.Entity<RequestStatus>()
                 .HasOne(rt => rt.Request)
                 .WithMany(b => b.RequestStatuses)
-                .HasForeignKey(rt => rt.IdRequest);
+                .HasForeignKey(rt => rt.RequestId);
 
             //selfjoin
             modelBuilder.Entity<Person>()

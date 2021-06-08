@@ -12,9 +12,10 @@ namespace LeaveRequest.Models
     public class Request
     {
         [Key]
-        public int Id { get; set; }
+        public int RequestId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public int IsDeleted { get; set; }
         [JsonIgnore]
         public virtual ICollection<RequestStatus> RequestStatuses { get; set; }
 

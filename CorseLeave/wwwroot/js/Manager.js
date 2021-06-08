@@ -2,7 +2,7 @@
     var table = $('#applyList').DataTable({
         dom: 'lBfrtip',
         ajax: {
-            "url": "https://localhost:44313/API/Accounts/ApplyListManager/"+"123451", //NIK diganti dari NIK Session
+            "url": "Accounts/ApplyListManager?NIK="+"123451", //NIK diganti dari NIK Session
             "datatype": "json",
             "dataSrc": ""
         },
@@ -86,7 +86,7 @@
 
 function dataUser(idRequest) {
     $.ajax({
-        url: "https://localhost:44313/API/Accounts/ApplyDetail/" + idRequest
+        url: "Accounts/ApplyDetail?IdRequest=" + idRequest
     }).done((result) => {
         console.log(result);
         var text = `<ul>
@@ -127,13 +127,191 @@ function dataUser(idRequest) {
                             End Date : ${result.endDate} 
                         </li>
                         <li>
-                            Reason : ${result.reason} 
+                            Reason : ${result.type} 
                         </li>
                     </ul>`
         $('#exampleModalLabel').html(result.firstName + ' ' + result.lastName);
         $('#modal-body-detail').html(text);
-        $('#exampleModal').modal('show');
+        $('#approve').attr('onClick', 'approve(' + result.idRequest + ')');
+        $('#tolak').attr('onClick', 'tolak(' + result.idRequest + ')');
+        $('#detail').modal('show');
     }).fail((error) => {
         console.log(error);
     });
+}
+
+function approve(idRequest) {
+    //console.log(idRequest);
+    $.ajax({
+        url: "RequestStatus/GetByRequestId?RequestId=" + idRequest
+    }).done((resultReqStat) => {
+        console.log(resultReqStat);
+        Swal.fire({
+            title: 'Approve Pengajuan Ini?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Approve pengajuan!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var req = {
+                    NIK: resultReqStat.nik,
+                    Status: "Approve",
+                    RequestId: resultReqStat.requestId,
+                }
+                //console.log(resultReqStat);
+                //console.log(req);
+                $.ajax({
+                    url: "https://localhost:44313/API/RequestStatus/",
+                    data: JSON.stringify(req),
+                    type: "PUT",
+                    contentType: "application/json;charset=utf-8",
+                }).done((result) => {
+
+                    $.ajax({
+                        url: "https://localhost:44313/API/LeaveAllowances/" + resultReqStat.nik
+                    }).done((resultLeaveAllowance) => {
+                        //console.log(resultLeaveAllowance);
+                        $.ajax({
+                            url: "https://localhost:44313/API/Requests/" + idRequest
+                        }).done((resultRequest) => {
+                            var newLeaveAllowance = {
+                                NIK: resultReqStat.nik,
+                                LeaveAllow: resultLeaveAllowance.leaveAllow - calculateDay(new Date(resultRequest.startDate.substring(5, 7) + "/" + resultRequest.startDate.substring(8, 10) + "/" + resultRequest.startDate.substring(0, 4)), new Date(resultRequest.endDate.substring(5, 7) + "/" + resultRequest.endDate.substring(8, 10) + "/" + resultRequest.endDate.substring(0, 4))),
+                                UsedLeaveAllow: resultLeaveAllowance.usedLeaveAllow + calculateDay(new Date(resultRequest.startDate.substring(5, 7) + "/" + resultRequest.startDate.substring(8, 10) + "/" + resultRequest.startDate.substring(0, 4)), new Date(resultRequest.endDate.substring(5, 7) + "/" + resultRequest.endDate.substring(8, 10) + "/" + resultRequest.endDate.substring(0, 4))),
+                            }
+                            //console.log(newLeaveAllowance);
+                            $.ajax({
+                                url: "https://localhost:44313/API/LeaveAllowances/",
+                                data: JSON.stringify(newLeaveAllowance),
+                                type: "PUT",
+                                contentType: "application/json;charset=utf-8",
+                            }).done((resultUpdate) => {
+                                var response = {
+                                    NIK: resultReqStat.nik,
+                                    Response: "Approved"
+                                }
+                                $.ajax({
+                                    url: "RequestStatus/LeaveRequestResponse/",
+                                    data: JSON.stringify(response),
+                                    type: "POST",
+                                    contentType: "application/json;charset=utf-8",
+                                    dataType: "json"
+                                }).done((resultResponse) => {
+                                    $('#detail').modal('hide');
+                                    Swal.fire(
+                                        'Approved!',
+                                        'Leave request has been approved.',
+                                        'success'
+                                    )
+                                    $('#applyList').DataTable().ajax.reload();
+                                }).fail((error) => {
+
+                                });
+
+                            }).fail((error) => {
+
+                            });
+
+                        }).fail((error) => {
+
+                        });
+
+                    }).fail((error) => {
+
+                    });
+
+                    
+                }).fail((error) => {
+
+                });
+
+            }
+        })
+    })
+}
+
+function tolak(idRequest) {
+    console.log(idRequest);
+    $.ajax({
+        url: "RequestStatus/GetByRequestId?RequestId=" + idRequest
+    }).done((resultReqStat) => {
+        Swal.fire({
+            title: 'Tolak Pengajuan Ini?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Tolak pengajuan!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var req = {
+                    NIK: resultReqStat.nik,
+                    Status: "Rejected",
+                    RequestId: resultReqStat.requestId,
+                }
+
+                $.ajax({
+                    url: "https://localhost:44313/API/RequestStatus/",
+                    data: JSON.stringify(req),
+                    type: "PUT",
+                    contentType: "application/json;charset=utf-8",
+                }).done((resultRejected) => {
+                    var response = {
+                        NIK: resultReqStat.nik,
+                        Response: "Rejected"
+                    }
+                    console.log(response);
+                    $.ajax({
+                        url: "RequestStatus/LeaveRequestResponse/",
+                        data: JSON.stringify(response),
+                        type: "POST",
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json"
+                    }).done((resultResponse) => {
+                        $('#detail').modal('hide');
+                        Swal.fire(
+                            'Rejected!',
+                            'Leave request has been rejected.',
+                            'success'
+                        )
+                        $('#applyList').DataTable().ajax.reload();
+                    }).fail((error) => {
+
+                    });
+
+                }).fail((error) => {
+
+                });
+            }
+        })
+    }).fail((error) => {
+
+    });
+}
+
+function calculateDay(startDate, endDate) {
+    var Difference_In_Time = endDate.getTime() - startDate.getTime();
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    //return Difference_In_Days;
+    var leave = 0;
+    for (var d = new Date(startDate); d <= new Date(endDate); d.setDate(d.getDate() + 1)) {
+        day = getDay(d.getDay());
+        //console.log(day);
+        if (day != "Saturday" && day != "Sunday") {
+            //console.log(day);
+            leave += 1;
+        }
+    }
+    console.log(leave);
+    return leave;
+}
+
+function getDay(numOfDay) {
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var dayName = days[numOfDay];
+    return dayName;
 }

@@ -1,0 +1,180 @@
+﻿
+@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/_LayoutLanding.cshtml";
+}
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+        <h1 class="logo me-auto"><a href="index.html">Leave Request</a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+                <li><a class="nav-link scrollto" href="#about">About</a></li>
+                <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+                <li><a class="getstarted" href="javascript:login()" data-toggle="modal" data-target="#login">Login</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+
+    </div>
+</header><!-- End Header -->
+<!-- ======= Hero Section ======= -->
+<section id="hero" class="d-flex align-items-center">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
+                <h1>Welcome To Leave Request Site</h1>
+                <h2>Made by member of MCC batch 49</h2>
+            </div>
+            <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="200">
+                <img src="assets/img/hero-img.png" class="img-fluid animated" alt="">
+            </div>
+        </div>
+    </div>
+
+</section><!-- End Hero -->
+
+<main id="main">
+    <!-- ======= About Us Section ======= -->
+    <section id="about" class="about">
+        <div class="container" data-aos="fade-up">
+
+            <div class="section-title">
+                <h2>About This Application</h2>
+            </div>
+
+            <div class="row content">
+                <div>
+                    <p>
+                        Aplikasi ini dibuat bertujuan untuk :
+                    </p>
+                    <ul>
+                        <li><i class="ri-check-double-line"></i> Mempermudah karyawan dalam mengajukan permohonan cuti, </li>
+                        <li><i class="ri-check-double-line"></i> Mempermudah pimpinan dalam memberikan persetujuan permohonan cuti karyawan, </li>
+                        <li><i class="ri-check-double-line"></i> Mengganti penggunaan kertas </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </section><!-- End About Us Section -->
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+        <div class="container" data-aos="fade-up">
+
+            <div class="section-title">
+                <h2>Contact</h2>
+            </div>
+
+            <div class="row">
+
+                <div @*class="col-lg-5 d-flex align-items-stretch"*@>
+                    <div class="info">
+                        <div class="address">
+                            <i class="bi bi-geo-alt"></i>
+                            <h4>Location:</h4>
+                            <p>APL Tower Lantai 37 Jl. Letjen S. Parman Kav. 28 Jakarta 11470</p>
+                        </div>
+
+                        <div class="email">
+                            <i class="bi bi-envelope"></i>
+                            <h4>Email:</h4>
+                            <p> contact@mii.co.id</p>
+                        </div>
+
+                        <div class="phone">
+                            <i class="bi bi-phone"></i>
+                            <h4>Call:</h4>
+                            <p>+62 21 29345 777 </p>
+                        </div>
+
+                        <div class="faks">
+                            <i class="bi bi-telephone"></i>
+                            <h4>Fax:</h4>
+                            <p>+62 21 29345 700 </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section><!-- End Contact Section -->
+
+</main><!-- End #main -->
+<!-- MODAL LOGIN -->>
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="text-transform:uppercase"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body-login">
+                <form method="post" id="loginform" action="javascript:login()" novalidate>
+                    <div>
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" name="email" id="email" class="form-control" placeholder="xxxx@gmail.com" required />
+                        <div class="invalid-feedback">
+                            Please insert your email
+                        </div>
+                    </div>
+                    <div>
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Insert your password" required />
+                        <div class="invalid-feedback">
+                            Please insert your password
+                        </div>
+                    </div>
+                    <input type="submit" name="name" class="btn btn-secondary" value="Login" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Login</button>*@
+                <button type="button" class="btn btn-danger"  onclick="forgotPasswordModal()">Forgot Password</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Modal Forgot Password*@
+
+<div class="modal fade" id="forgot" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="text-transform:uppercase"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body-forgot">
+                <form method="post" id="forgotform" action="javascript:forgotPassword()" novalidate>
+                    <div>
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" name="email" id="emailFP" class="form-control" placeholder="xxxx@gmail.com" required />
+                        <div class="invalid-feedback">
+                            Please insert your email
+                        </div>
+                    </div>
+                    <input type="submit" name="name" class="btn btn-secondary" value="Submit" />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
