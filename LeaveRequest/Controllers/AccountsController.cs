@@ -53,6 +53,7 @@ namespace LeaveRequest.Controllers
                 person.LastName = registerVM.LastName;
                 person.Email = registerVM.Email;
                 person.BirthDate = registerVM.BirthDate;
+                person.Gender = registerVM.Gender;
                 person.Phone = registerVM.Phone;
                 myContext.Persons.Add(person);
                 myContext.SaveChanges();
@@ -179,11 +180,11 @@ namespace LeaveRequest.Controllers
                 join requestStatus in myContext.RequestStatuses
                 on person.NIK equals requestStatus.NIK
                 join request in myContext.Requests
-                on requestStatus.IdRequest equals request.Id
+                on requestStatus.RequestId equals request.RequestId
                 join requestType in myContext.RequestTypes
-                on request.Id equals requestType.IdRequest
+                on request.RequestId equals requestType.RequestId
                 join type in myContext.Tipes
-                on requestType.IdType equals type.Id
+                on requestType.TipeId equals type.TipeId
                 select new
                 {
                     NIK = person.NIK,
@@ -195,11 +196,11 @@ namespace LeaveRequest.Controllers
                     Email = person.Email,
                     BirthDate = person.BirthDate,
                     Phone = person.Phone,
-                    IdRequest = requestStatus.IdRequest,
+                    IdRequest = requestStatus.RequestId,
                     Status = requestStatus.Status,
                     StartDate = request.StartDate,
                     EndDate = request.EndDate,
-                    IdType = requestType.IdType,
+                    IdType = requestType.TipeId,
                     Type = type.NameTipe
                 }
                 ).ToListAsync();
@@ -218,12 +219,12 @@ namespace LeaveRequest.Controllers
                 join requestStatus in myContext.RequestStatuses
                 on person.NIK equals requestStatus.NIK
                 join request in myContext.Requests
-                on requestStatus.IdRequest equals request.Id
+                on requestStatus.RequestId equals request.RequestId
                 join requestType in myContext.RequestTypes
-                on request.Id equals requestType.IdRequest
+                on request.RequestId equals requestType.RequestId
                 join type in myContext.Tipes
-                on requestType.IdType equals type.Id
-                where person.NIK == NIK
+                on requestType.TipeId equals type.TipeId
+                where person.NIK == NIK && request.IsDeleted == 0 && requestStatus.Status == "Unprocessed"
                 select new
                 {
                     NIK = person.NIK,
@@ -235,11 +236,12 @@ namespace LeaveRequest.Controllers
                     Email = person.Email,
                     BirthDate = person.BirthDate,
                     Phone = person.Phone,
-                    IdRequest = requestStatus.IdRequest,
+                    IdRequest = requestStatus.RequestId,
+                    RequestId = request.RequestId,
                     Status = requestStatus.Status,
                     StartDate = request.StartDate,
                     EndDate = request.EndDate,
-                    IdType = requestType.IdType,
+                    IdType = requestType.TipeId,
                     Type = type.NameTipe
                 }
                 ).ToListAsync();
@@ -258,12 +260,12 @@ namespace LeaveRequest.Controllers
                 join requestStatus in myContext.RequestStatuses
                 on person.NIK equals requestStatus.NIK
                 join request in myContext.Requests
-                on requestStatus.IdRequest equals request.Id
+                on requestStatus.RequestId equals request.RequestId
                 join requestType in myContext.RequestTypes
-                on request.Id equals requestType.IdRequest
+                on request.RequestId equals requestType.RequestId
                 join type in myContext.Tipes
-                on requestType.IdType equals type.Id
-                where person.ManagerId == managerId
+                on requestType.TipeId equals type.TipeId
+                where person.ManagerId == managerId && request.IsDeleted == 0 && requestStatus.Status == "Unprocessed"
                 select new
                 {
                     NIK = person.NIK,
@@ -275,11 +277,11 @@ namespace LeaveRequest.Controllers
                     Email = person.Email,
                     BirthDate = person.BirthDate,
                     Phone = person.Phone,
-                    IdRequest = requestStatus.IdRequest,
+                    IdRequest = requestStatus.RequestId,
                     Status = requestStatus.Status,
                     StartDate = request.StartDate,
                     EndDate = request.EndDate,
-                    IdType = requestType.IdType,
+                    IdType = requestType.TipeId,
                     Type = type.NameTipe
                 }
                 ).ToListAsync();
@@ -296,12 +298,12 @@ namespace LeaveRequest.Controllers
                 join requestStatus in myContext.RequestStatuses
                 on person.NIK equals requestStatus.NIK
                 join request in myContext.Requests
-                on requestStatus.IdRequest equals request.Id
+                on requestStatus.RequestId equals request.RequestId
                 join requestType in myContext.RequestTypes
-                on request.Id equals requestType.IdRequest
+                on request.RequestId equals requestType.RequestId
                 join type in myContext.Tipes
-                on requestType.IdType equals type.Id
-                where request.Id == requestID
+                on requestType.TipeId equals type.TipeId
+                where request.RequestId == requestID
                 select new
                 {
                     NIK = person.NIK,
@@ -313,12 +315,12 @@ namespace LeaveRequest.Controllers
                     Email = person.Email,
                     BirthDate = person.BirthDate,
                     Phone = person.Phone,
-                    IdRequest = requestStatus.IdRequest,
+                    IdRequest = requestStatus.RequestId,
                     Status = requestStatus.Status,
                     StartDate = request.StartDate,
                     EndDate = request.EndDate,
-                    IdType = requestType.IdType,
-                    Reason = type.NameTipe
+                    IdType = requestType.TipeId,
+                    Type = type.NameTipe
                 }
                 ).FirstOrDefault();
             return Ok(data);
@@ -332,22 +334,21 @@ namespace LeaveRequest.Controllers
                 Request request = new Request();
                 request.StartDate = applyVM.StartDate;
                 request.EndDate = applyVM.EndDate;
+                request.IsDeleted = 0;
                 myContext.Requests.Add(request);
                 myContext.SaveChanges();
-
                 try
                 {
                     RequestType requestType = new RequestType();
-                    requestType.IdType = applyVM.IdType;
-                    requestType.IdRequest = myContext.Requests.Select(r => r.Id).Max();
+                    requestType.TipeId = applyVM.IdType;
+                    requestType.RequestId = myContext.Requests.Select(r => r.RequestId).Max();
                     myContext.RequestTypes.Add(requestType);
                     myContext.SaveChanges();
-
                     try
                     {
                         RequestStatus requestStatus = new RequestStatus();
                         requestStatus.NIK = applyVM.NIK;
-                        requestStatus.IdRequest = myContext.Requests.Select(r => r.Id).Max();
+                        requestStatus.RequestId = myContext.Requests.Select(r => r.RequestId).Max();
                         requestStatus.Status = "Unprocessed";
                         myContext.RequestStatuses.Add(requestStatus);
                         myContext.SaveChanges();
@@ -365,26 +366,23 @@ namespace LeaveRequest.Controllers
                         var resultRStatus = myContext.SaveChanges();
 
                         return StatusCode(405, new { status = HttpStatusCode.MethodNotAllowed, message = "..." });
-                        throw;
-
                     }
                 }
                 catch (Exception)
                 {
-                    var delRequest = myContext.Requests.Find(myContext.Requests.Select(r => r.Id).Max());
+                    var delRequest = myContext.Requests.Find(myContext.Requests.Select(r => r.RequestId).Max());
                     myContext.Requests.Remove(delRequest);
                     var resultRequest = myContext.SaveChanges();
 
 
                     return StatusCode(405, new { status = HttpStatusCode.MethodNotAllowed, message = "..." });
-                    throw;
                 }
+
             }
             catch (Exception)
             {
                 return StatusCode(400, new { status = HttpStatusCode.MethodNotAllowed, message = "Bad Request" });
-                throw;
-            }
+            }    
         }
 
         [HttpPost("ChangePassword")]
@@ -451,7 +449,7 @@ namespace LeaveRequest.Controllers
                 myContext.SaveChanges();
                 var client = new SmtpClient("smtp.gmail.com", 587)
                 {
-                    Credentials = new NetworkCredential("hidgastg@gmail.com", ""),
+                    Credentials = new NetworkCredential("hidgastg@gmail.com", "inayah71"),
                     EnableSsl = true
                 };
                 client.Send("hidgastg@gmail.com", forgotPasswordVM.Email, "RESET PASSWORD REQUEST", $"Hello {person.FirstName} {person.LastName} \nHere is Your New Password : {newPass}");
@@ -460,6 +458,20 @@ namespace LeaveRequest.Controllers
             else
             {
                 return NotFound("Email Not Found");
+            }
+        }
+
+        [HttpPost("CheckPassword")]
+        public IActionResult CheckPassword(CheckPasswordVM checkPasswordVM)
+        {
+            var password = myContext.Accounts.FirstOrDefault(a => a.NIK == checkPasswordVM.NIK).Password;
+            if (password != null && Hashing.VerifyPassword(checkPasswordVM.Password, password))
+            {
+                return Ok("success");
+            }
+            else
+            {
+                return NotFound("Wrong Password");
             }
         }
     }

@@ -12,7 +12,7 @@ namespace LeaveRequest.Models
     public class Tipe
     {
         [Key]
-        public int Id { get; set; }
+        public int TipeId { get; set; }
         public string NameTipe { get; set; }
 
         [JsonIgnore]

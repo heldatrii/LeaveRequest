@@ -1,6 +1,7 @@
 ﻿using CorseLeave.Base;
 using CorseLeave.Repository.Data;
 using LeaveRequest.Models;
+using LeaveRequest.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -23,12 +24,28 @@ namespace CorseLeave.Controllers
             return View();
         }
 
-        public async Task<JsonResult> GetUserData()
+        public async Task<JsonResult> ApplyListManager(string NIK)
         {
-            var result = await repository.Get();
+            var result = await repository.ApplyListManager(NIK);
+            return Json(result);
+        }
+        
+        public async Task<JsonResult> ApplyListID(string NIK)
+        {
+            var result = await repository.ApplyListID(NIK);
             return Json(result);
         }
 
+        public async Task<JsonResult> ApplyDetail(string IdRequest)
+        {
+            var result = await repository.ApplyDetail(IdRequest);
+            return Json(result);
+        }
 
+        public JsonResult CheckPassword(CheckPasswordVM checkPasswordVM)
+        {
+            var result = repository.CheckPassword(checkPasswordVM);
+            return Json(result);
+        }
     }
 }

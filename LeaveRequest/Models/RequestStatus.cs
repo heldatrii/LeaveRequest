@@ -12,8 +12,10 @@ namespace LeaveRequest.Models
     public class RequestStatus
     {
         public string NIK { get; set; }
+        [JsonIgnore]
         public virtual Person Person { get; set; }
-        public int IdRequest { get; set; }
+        public int RequestId { get; set; }
+        [JsonIgnore]
         public virtual Request Request { get; set; }
         public string Status { get; set; }
 

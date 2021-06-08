@@ -10,11 +10,11 @@ namespace LeaveRequest.Models
     [Table("tb_m_requestType")]
     public class RequestType
     {
-        public int IdRequest { get; set; }
+        public int RequestId { get; set; }
 
         [JsonIgnore]
         public virtual Request Request { get; set; }
-        public int IdType { get; set; }
+        public int TipeId { get; set; }
 
         [JsonIgnore]
         public virtual Tipe Tipe { get; set; }

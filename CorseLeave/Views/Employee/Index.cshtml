@@ -6,7 +6,6 @@
 
 <h1>Ini Halaman Employee</h1>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addrequest" onclick="clearTextBox();">Add New Employee</button>
 <!-- Modal -->
 <div class="modal fade" id="addrequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document" style="max-width: 1000px;">
@@ -68,12 +67,14 @@
     </div>
 </div>
 
+
 <div class="container">
     <div class="row">
         <table id="apply" class="display" style="width:100%">
             <thead>
                 <tr>
                     <th>No</th>
+                    <th>Request ID</th>
                     <th>NIK</th>
                     <th>Start Date</th>
                     <th>End Date</th>
@@ -84,6 +85,7 @@
             <tfoot>
                 <tr>
                     <th>No</th>
+                    <th>Request ID</th>
                     <th>NIK</th>
                     <th>Start Date</th>
                     <th>End Date</th>
@@ -94,6 +96,10 @@
         </table>
     </div>
 </div>
+<section>
+    @*NIK GANTI DARI SESSION*@
+    <button type="button" class="btn btn-primary" data-toggle="modal" onclick="clearTextBox('123453');">Apply Leave Request</button>
+</section>
 
 <section>
     <canvas id="myChart" width="400" height="400"></canvas>
