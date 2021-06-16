@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace CorseLeave.Repository.Data
 {
-    public class RequestRepository : GeneralRepository<Request, int>
+    public class RequestTypeRepository : GeneralRepository<RequestType, int>
     {
         private readonly Address address;
         private readonly string request;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly HttpClient httpClient;
 
-        public RequestRepository(Address address, string request = "Requests/") : base(address, request)
+        public RequestTypeRepository(Address address, string request = "RequestTypes/") : base(address, request)
         {
             this.address = address;
             this.request = request;

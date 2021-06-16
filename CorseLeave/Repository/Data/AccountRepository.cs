@@ -72,14 +72,7 @@ namespace CorseLeave.Repository.Data
         public HttpStatusCode CheckPassword(CheckPasswordVM checkPasswordVM)
         {
             StringContent content = new StringContent(JsonConvert.SerializeObject(checkPasswordVM), Encoding.UTF8, "application/json");
-            var result = httpClient.PostAsync(address.link + request + "CheckPassword/", content).Result;
-            return result.StatusCode;
-        }
-
-        public HttpStatusCode Apply(ApplyVM applyVM)
-        {
-            StringContent content = new StringContent(JsonConvert.SerializeObject(applyVM), Encoding.UTF8, "application/json");
-            var result = httpClient.PostAsync(address.link + request + "Apply", content).Result;
+            var result = httpClient.PostAsync(address.link + request, content).Result;
             return result.StatusCode;
         }
     }

@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace CorseLeave.Controllers
 {
-    public class RequestsController : BaseController<Request, RequestRepository, int>
+    public class RequestTypesController : BaseController<RequestType, RequestTypeRepository, int>
     {
-        private readonly RequestRepository repository;
+        private readonly RequestTypeRepository repository;
 
-        public RequestsController(RequestRepository repository) : base(repository)
+        public RequestTypesController(RequestTypeRepository repository) : base(repository)
         {
             this.repository = repository;
         }

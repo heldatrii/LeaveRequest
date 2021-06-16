@@ -111,33 +111,33 @@
     </section><!-- End Contact Section -->
 
 </main><!-- End #main -->
-<!-- MODAL LOGIN -->
+<!-- MODAL LOGIN -->>
 <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" style="text-transform:uppercase">LOGIN</h2>
-                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="exampleModalLabel" style="text-transform:uppercase"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button>*@
+                </button>
             </div>
             <div class="modal-body" id="modal-body-login">
                 <form method="post" id="loginform" action="javascript:login()" novalidate>
                     <div>
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" name="email" id="emailLogin" class="form-control" placeholder="xxxx@gmail.com" required />
+                        <input type="email" name="email" id="email" class="form-control" placeholder="xxxx@gmail.com" required />
                         <div class="invalid-feedback">
                             Please insert your email
                         </div>
                     </div>
                     <div>
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" name="password" id="passwordLogin" class="form-control" placeholder="Insert your password" required />
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Insert your password" required />
                         <div class="invalid-feedback">
                             Please insert your password
                         </div>
                     </div>
-                    <input type="submit" name="name" class="btn btn-success form-control" value="Login" style="margin-top: 1%;" />
+                    <input type="submit" name="name" class="btn btn-secondary" value="Login" />
                 </form>
             </div>
             <div class="modal-footer">
@@ -154,10 +154,10 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" style="text-transform:uppercase">FORGOT PASSWORD</h2>
-                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="exampleModalLabel" style="text-transform:uppercase"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button>*@
+                </button>
             </div>
             <div class="modal-body" id="modal-body-forgot">
                 <form method="post" id="forgotform" action="javascript:forgotPassword()" novalidate>
@@ -168,12 +168,12 @@
                             Please insert your email
                         </div>
                     </div>
-                    <input type="submit" name="name" class="btn btn-success form-control" value="Submit" style="margin-top: 1%;" />
+                    <input type="submit" name="name" class="btn btn-secondary" value="Submit" />
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                @*<button type="button" class="btn btn-primary">Send</button>*@
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Send</button>
             </div>
         </div>
     </div>

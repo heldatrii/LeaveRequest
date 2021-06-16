@@ -47,11 +47,5 @@ namespace CorseLeave.Controllers
             var result = repository.CheckPassword(checkPasswordVM);
             return Json(result);
         }
-
-        public JsonResult Apply(ApplyVM applyVM)
-        {
-            var result = repository.Apply(applyVM);
-            return Json(result);
-        }
     }
 }

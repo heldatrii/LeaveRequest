@@ -16,16 +16,11 @@ namespace LeaveRequest.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int IsDeleted { get; set; }
-        public string Status { get; set; }
-        [ForeignKey("Tipe")]
-        public int TipeId { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<RequestStatus> RequestStatuses { get; set; }
 
         [JsonIgnore]
-        public virtual Tipe Tipe { get; set; }
-        [ForeignKey("Person")]
-        public string NIK { get; set; }
-        [JsonIgnore]
-        public virtual Person Person { get; set; }
+        public virtual IList<RequestType> RequestTypes { get; set; }
 
     }
 }

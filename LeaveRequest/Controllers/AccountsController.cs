@@ -143,8 +143,6 @@ namespace LeaveRequest.Controllers
                     new Claim("NIK", person.NIK),
                     new Claim("FirstName", person.FirstName),
                     new Claim("LastName", person.LastName),
-                    new Claim("Name", person.FirstName+" "+person.LastName),
-
                     new Claim("Email", person.Email)
                     };
                     foreach (var item in roleAccount)
@@ -158,8 +156,7 @@ namespace LeaveRequest.Controllers
 
                     var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"], claims, expires: DateTime.UtcNow.AddMinutes(10), signingCredentials: signIn);
 
-                    //return StatusCode(200, new { status = HttpStatusCode.OK, message = "", person.Email, token = new JwtSecurityTokenHandler().WriteToken(token) });
-                    return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+                    return StatusCode(200, new { status = HttpStatusCode.OK, message = "", person.Email, token = new JwtSecurityTokenHandler().WriteToken(token) });
                 }
                 else
                 {
@@ -180,10 +177,14 @@ namespace LeaveRequest.Controllers
                 from departement in myContext.Departements
                 join person in myContext.Persons
                 on departement.Id equals person.IdDepartement
+                join requestStatus in myContext.RequestStatuses
+                on person.NIK equals requestStatus.NIK
                 join request in myContext.Requests
-                on person.NIK equals request.NIK
+                on requestStatus.RequestId equals request.RequestId
+                join requestType in myContext.RequestTypes
+                on request.RequestId equals requestType.RequestId
                 join type in myContext.Tipes
-                on request.TipeId equals type.TipeId
+                on requestType.TipeId equals type.TipeId
                 select new
                 {
                     NIK = person.NIK,
@@ -195,11 +196,11 @@ namespace LeaveRequest.Controllers
                     Email = person.Email,
                     BirthDate = person.BirthDate,
                     Phone = person.Phone,
-                    IdRequest = request.RequestId,
-                    Status = request.Status,
+                    IdRequest = requestStatus.RequestId,
+                    Status = requestStatus.Status,
                     StartDate = request.StartDate,
                     EndDate = request.EndDate,
-                    IdType = request.TipeId,
+                    IdType = requestType.TipeId,
                     Type = type.NameTipe
                 }
                 ).ToListAsync();
@@ -208,41 +209,6 @@ namespace LeaveRequest.Controllers
 
         //Fungsi untuk menampilkan data apply pegawai tertentu
         //[Authorize]
-        [HttpGet("ApplyListHistory/{NIK}")]
-        public async Task<IActionResult> ApplyListApplyListHistory(string NIK)
-        {
-            var data = await (
-                from departement in myContext.Departements
-                join person in myContext.Persons
-                on departement.Id equals person.IdDepartement
-                join request in myContext.Requests
-                on person.NIK equals request.NIK
-                join type in myContext.Tipes
-                on request.TipeId equals type.TipeId
-                where person.NIK == NIK && request.IsDeleted == 0 && request.Status != "Unprocessed"
-                select new
-                {
-                    NIK = person.NIK,
-                    IdDepartement = person.IdDepartement,
-                    DepartementName = departement.Name,
-                    ManagerId = person.ManagerId,
-                    FirstName = person.FirstName,
-                    LastName = person.LastName,
-                    Email = person.Email,
-                    BirthDate = person.BirthDate,
-                    Phone = person.Phone,
-                    IdRequest = request.RequestId,
-                    RequestId = request.RequestId,
-                    Status = request.Status,
-                    StartDate = request.StartDate,
-                    EndDate = request.EndDate,
-                    IdType = request.TipeId,
-                    Type = type.NameTipe
-                }
-                ).ToListAsync();
-            return Ok(data);
-        }
-
         [HttpGet("ApplyListID/{NIK}")]
         public async Task<IActionResult> ApplyListID(string NIK)
         {
@@ -250,11 +216,15 @@ namespace LeaveRequest.Controllers
                 from departement in myContext.Departements
                 join person in myContext.Persons
                 on departement.Id equals person.IdDepartement
+                join requestStatus in myContext.RequestStatuses
+                on person.NIK equals requestStatus.NIK
                 join request in myContext.Requests
-                on person.NIK equals request.NIK
+                on requestStatus.RequestId equals request.RequestId
+                join requestType in myContext.RequestTypes
+                on request.RequestId equals requestType.RequestId
                 join type in myContext.Tipes
-                on request.TipeId equals type.TipeId
-                where person.NIK == NIK && request.IsDeleted == 0 && request.Status == "Unprocessed"
+                on requestType.TipeId equals type.TipeId
+                where person.NIK == NIK && request.IsDeleted == 0 && requestStatus.Status == "Unprocessed"
                 select new
                 {
                     NIK = person.NIK,
@@ -266,18 +236,18 @@ namespace LeaveRequest.Controllers
                     Email = person.Email,
                     BirthDate = person.BirthDate,
                     Phone = person.Phone,
-                    IdRequest = request.RequestId,
+                    IdRequest = requestStatus.RequestId,
                     RequestId = request.RequestId,
-                    Status = request.Status,
+                    Status = requestStatus.Status,
                     StartDate = request.StartDate,
                     EndDate = request.EndDate,
-                    IdType = request.TipeId,
+                    IdType = requestType.TipeId,
                     Type = type.NameTipe
                 }
                 ).ToListAsync();
             return Ok(data);
         }
-
+        
         //fungsi untuk menampilkan data apply manager tertentu
         //[Authorize]
         [HttpGet("ApplyListManager/{managerId}")]
@@ -287,11 +257,15 @@ namespace LeaveRequest.Controllers
                 from departement in myContext.Departements
                 join person in myContext.Persons
                 on departement.Id equals person.IdDepartement
+                join requestStatus in myContext.RequestStatuses
+                on person.NIK equals requestStatus.NIK
                 join request in myContext.Requests
-                on person.NIK equals request.NIK
+                on requestStatus.RequestId equals request.RequestId
+                join requestType in myContext.RequestTypes
+                on request.RequestId equals requestType.RequestId
                 join type in myContext.Tipes
-                on request.TipeId equals type.TipeId
-                where person.ManagerId == managerId && request.IsDeleted == 0 && request.Status == "Unprocessed"
+                on requestType.TipeId equals type.TipeId
+                where person.ManagerId == managerId && request.IsDeleted == 0 && requestStatus.Status == "Unprocessed"
                 select new
                 {
                     NIK = person.NIK,
@@ -303,17 +277,17 @@ namespace LeaveRequest.Controllers
                     Email = person.Email,
                     BirthDate = person.BirthDate,
                     Phone = person.Phone,
-                    IdRequest = request.RequestId,
-                    Status = request.Status,
+                    IdRequest = requestStatus.RequestId,
+                    Status = requestStatus.Status,
                     StartDate = request.StartDate,
                     EndDate = request.EndDate,
-                    IdType = request.TipeId,
+                    IdType = requestType.TipeId,
                     Type = type.NameTipe
                 }
                 ).ToListAsync();
             return Ok(data);
         }
-
+        
         [HttpGet("ApplyDetail/{requestID}")]
         public IActionResult ApplyDetail(int requestID)
         {
@@ -321,27 +295,31 @@ namespace LeaveRequest.Controllers
                 from departement in myContext.Departements
                 join person in myContext.Persons
                 on departement.Id equals person.IdDepartement
+                join requestStatus in myContext.RequestStatuses
+                on person.NIK equals requestStatus.NIK
                 join request in myContext.Requests
-                on person.NIK equals request.NIK
+                on requestStatus.RequestId equals request.RequestId
+                join requestType in myContext.RequestTypes
+                on request.RequestId equals requestType.RequestId
                 join type in myContext.Tipes
-                on request.TipeId equals type.TipeId
+                on requestType.TipeId equals type.TipeId
                 where request.RequestId == requestID
                 select new
                 {
                     NIK = person.NIK,
                     IdDepartement = person.IdDepartement,
-                    DepartementName = departement.Name,
+                    DepartmentName = departement.Name,
                     ManagerId = person.ManagerId,
                     FirstName = person.FirstName,
                     LastName = person.LastName,
                     Email = person.Email,
                     BirthDate = person.BirthDate,
                     Phone = person.Phone,
-                    IdRequest = request.RequestId,
-                    Status = request.Status,
+                    IdRequest = requestStatus.RequestId,
+                    Status = requestStatus.Status,
                     StartDate = request.StartDate,
                     EndDate = request.EndDate,
-                    IdType = request.TipeId,
+                    IdType = requestType.TipeId,
                     Type = type.NameTipe
                 }
                 ).FirstOrDefault();
@@ -357,17 +335,54 @@ namespace LeaveRequest.Controllers
                 request.StartDate = applyVM.StartDate;
                 request.EndDate = applyVM.EndDate;
                 request.IsDeleted = 0;
-                request.TipeId = applyVM.IdType;
-                request.NIK = applyVM.NIK;
-                request.Status = "Unprocessed";
                 myContext.Requests.Add(request);
                 myContext.SaveChanges();
-                return Ok("Apply was successfully");
+                try
+                {
+                    RequestType requestType = new RequestType();
+                    requestType.TipeId = applyVM.IdType;
+                    requestType.RequestId = myContext.Requests.Select(r => r.RequestId).Max();
+                    myContext.RequestTypes.Add(requestType);
+                    myContext.SaveChanges();
+                    try
+                    {
+                        RequestStatus requestStatus = new RequestStatus();
+                        requestStatus.NIK = applyVM.NIK;
+                        requestStatus.RequestId = myContext.Requests.Select(r => r.RequestId).Max();
+                        requestStatus.Status = "Unprocessed";
+                        myContext.RequestStatuses.Add(requestStatus);
+                        myContext.SaveChanges();
+
+                        return Ok("Apply was successfully");
+                    }
+                    catch (Exception)
+                    {
+                        var delRequestType = myContext.RequestTypes.Find(applyVM.IdType);
+                        myContext.RequestTypes.Remove(delRequestType);
+                        var resultRType = myContext.SaveChanges();
+
+                        var delRequestStatus = myContext.RequestStatuses.Find(applyVM.NIK);
+                        myContext.RequestStatuses.Remove(delRequestStatus);
+                        var resultRStatus = myContext.SaveChanges();
+
+                        return StatusCode(405, new { status = HttpStatusCode.MethodNotAllowed, message = "..." });
+                    }
+                }
+                catch (Exception)
+                {
+                    var delRequest = myContext.Requests.Find(myContext.Requests.Select(r => r.RequestId).Max());
+                    myContext.Requests.Remove(delRequest);
+                    var resultRequest = myContext.SaveChanges();
+
+
+                    return StatusCode(405, new { status = HttpStatusCode.MethodNotAllowed, message = "..." });
+                }
+
             }
             catch (Exception)
             {
                 return StatusCode(400, new { status = HttpStatusCode.MethodNotAllowed, message = "Bad Request" });
-            }
+            }    
         }
 
         [HttpPost("ChangePassword")]
@@ -432,49 +447,12 @@ namespace LeaveRequest.Controllers
                 newAccount.Password = Hashing.HashPassword(newPass);
                 myContext.Accounts.Update(newAccount);
                 myContext.SaveChanges();
-
-                MailMessage mail = new MailMessage();
-                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-
-                mail.From = new MailAddress("hidgastg@gmail.com");
-                mail.To.Add(forgotPasswordVM.Email);
-                mail.Subject = "RESET PASSWORD REQUEST";
-
-                mail.IsBodyHtml = true;
-                string htmlBody;
-
-                htmlBody = "<body>";
-                htmlBody += "<div style='margin-left: 300px; margin-right: 300px;'>";
-                htmlBody += "<div style='border: 2px solid black; background-color: #7c97ece3; border-radius: 25px 25px 0 0;'>";
-                htmlBody += "<h1 style='margin-top: 10px; margin-bottom: 10px; text-align: center; color: white; '>RESET PASSWORD REQUEST</h1>";
-                htmlBody += "</div>";
-                htmlBody += "<div style='border-left: 2px solid black; border-right: 2px solid black;'>";
-                htmlBody += "<div style='padding: 25px;'>";
-
-                htmlBody += $"<p>Dear <b>{person.FirstName} {person.LastName}</b></p>";
-                htmlBody += "<p></p>";
-                htmlBody += "<p>Melalui email ini kami sampaikan password baru anda adalah : </p>";
-                htmlBody += $"<p><h1 style='text-align: center;'><b>{newPass}</b></h1></p>";
-                htmlBody += "<p></p>";
-                htmlBody += "<p>Mohon untuk mengganti password kembali setelah anda melakukan login.</p>";
-
-                htmlBody += "</div>";
-                htmlBody += "</div>";
-                htmlBody += "<div style='border: 2px solid black; background-color: #7c97ece3; border-radius: 0 0 25px 25px;'>";
-                htmlBody += "<p style='text-align: center; color: white;'>APL Tower Lantai 37 Jl. Letjen S. Parman Kav. 28 Jakarta 11470</p>";
-                htmlBody += "<p style='text-align: center; color: white;'>contact@mii.co.id</p>";
-                htmlBody += "<p style='text-align: center; color: white;'>+62 21 29345 777</p>";
-                htmlBody += "</div>";
-                htmlBody += "</div>";
-
-                mail.Body = htmlBody;
-
                 var client = new SmtpClient("smtp.gmail.com", 587)
                 {
                     Credentials = new NetworkCredential("hidgastg@gmail.com", "inayah71"),
                     EnableSsl = true
                 };
-                client.Send(mail);
+                client.Send("hidgastg@gmail.com", forgotPasswordVM.Email, "RESET PASSWORD REQUEST", $"Hello {person.FirstName} {person.LastName} \nHere is Your New Password : {newPass}");
                 return Ok("Request Sent");
             }
             else
@@ -495,31 +473,6 @@ namespace LeaveRequest.Controllers
             {
                 return NotFound("Wrong Password");
             }
-        }
-
-        [HttpGet("EmployeeCount/{NIK}")]
-        public async Task<IActionResult> EmployeeCount(string NIK)
-        {
-            var employee = await (
-                from person in myContext.Persons
-                join departement in myContext.Departements
-                on person.IdDepartement equals departement.Id
-                where person.ManagerId == NIK && person.NIK != NIK
-                select new
-                {
-                    NIK = person.NIK,
-                    IdDepartement = person.IdDepartement,
-                    DepartementName = departement.Name,
-                    ManagerId = person.ManagerId,
-                    FirstName = person.FirstName,
-                    LastName = person.LastName,
-                    Email = person.Email,
-                    BirthDate = person.BirthDate,
-                    Phone = person.Phone,
-                    Gender = person.Gender
-                }
-                ).ToListAsync();
-            return Ok(employee);
         }
     }
 }

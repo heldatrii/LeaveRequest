@@ -1,4 +1,8 @@
-﻿
+﻿function login() {
+    $("#btnLogin").click(function () {
+        $("#login").modal();
+    });
+}
 
 (function () {
     'use strict'
@@ -42,55 +46,61 @@ $(document).ready(function () {
     
 });
 
+function calculateDay(startDate, endDate) {
+    var Difference_In_Time = endDate.getTime() - startDate.getTime();
+    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    //return Difference_In_Days;
+    var leave = 0;
+    for (var d = new Date(startDate); d <= new Date(endDate); d.setDate(d.getDate() + 1)){
+        day = getDay(d.getDay());
+        //console.log(day);
+        if (day != "Saturday" && day != "Sunday") {
+            //console.log(day);
+            leave += 1;
+        }
+    }
+    console.log(leave);
+    return leave;
+}
+
+//function getDay(date) {
+//    console.log(date);
+//    var year = date.substring(0, 4);
+//    var month = date.substring(5, 7);
+//    var day = date.substring(8, 10);
+//    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+//    var d = new Date(month + "/" + day + "/" + year);
+//    var dayName = days[d.getDay()];
+//    return dayName;
+//}
+function getDay(numOfDay) {
+    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var dayName = days[numOfDay];
+    return dayName;
+}
+
 //FORGOT PASSWORD
 function forgotPasswordModal() {
     $("#login").modal('hide');
     $("#forgot").modal('show');
 }
 
-//function login() {
-//    var account = new Object();
-//    account.Email = $("#email").val();
-//    account.Password = $("#password").val();
-//    console.log(account);
-//    $.ajax({
-//        url: "https://localhost:44313/API/Accounts/Login",
-//        data: JSON.stringify(account),
-//        type: "POST",
-//        contentType: "application/json;charset=utf-8",
-//        dataType: "json"
-//    }).done((resultLogin) => {
-//        console.log(resultLogin.token);
-//    }).fail((error) => {
-
-//    });
-//}
-
 function login() {
-    var Login = new Object();
-    Login.Email = $("#emailLogin").val();
-    Login.Password = $("#passwordLogin").val();
-    console.log(Login);
+    var account = new Object();
+    account.Email = $("#email").val();
+    account.Password = $("#password").val();
+    console.log(account);
     $.ajax({
-        url: 'https://localhost:44304/Landing/Login',
-        type: 'Post',
-        data: Login
-    }).done((result) => {
-        console.log("ok", result);
-        if (result == '/Employee' || result == '/Manager') {
-            //alert("Successed to Login");
-            localStorage.setItem('LoginRes', JSON.stringify(result));
-            window.location.href = result;
-        }
-        else {
-            alert("Failed to Login");
-            $("#emailLogin").val(null);
-            $("#passwordLogin").val(null);
-        }
-    }).fail((result) => {
-        console.log(result);
-        alert("Failed to Login");
-    })
+        url: "https://localhost:44313/API/Accounts/Login",
+        data: JSON.stringify(account),
+        type: "POST",
+        contentType: "application/json;charset=utf-8",
+        dataType: "json"
+    }).done((resultLogin) => {
+        console.log(resultLogin.token);
+    }).fail((error) => {
+
+    });
 }
 
 function forgotPassword() {
@@ -104,35 +114,8 @@ function forgotPassword() {
         contentType: "application/json;charset=utf-8",
         dataType: "json"
     }).done((result) => {
-        $('#forgot').modal('hide');
-        Swal.fire(
-            'Reset Password Sent!!',
-            'New password has been sent to your email.',
-            'success'
-        )
         console.log(result);
     }).fail((error) => {
 
     });
 }
-
-$(document).ready(function () {
-    var getRole = $.ajax({
-        url: "https://localhost:44304/Landing/GetRole",
-        async: false,
-    }).done((result) => {
-        return result;
-    }).fail((error) => {
-
-    });
-
-    role = getRole.responseText;
-
-    console.log(role);
-
-    if (role == "Employee") {
-        window.location.href = "/Employee"
-    } else if (role == "Manager") {
-        window.location.href = "/Manager"
-    }
-});

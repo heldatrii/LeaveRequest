@@ -1,152 +1,76 @@
 ﻿@{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Home";
     Layout = "~/Views/Shared/_LayoutManager.cshtml";
 }
 
-<div class="container-fluid">
-    <h1>Dashboard</h1>
+<h1>Ini Halaman Manager</h1>
+<div class="container">
     <div class="row">
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Employee
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="employeeCount"></div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-users fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Unprocessed Request
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="unprocessed"></div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-clock fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Approved Request
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="approvedReq"></div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-check fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pending Requests Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-danger shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                Rejected Requests
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="rejected"></div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-times fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        <table id="applyList" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>NIK</th>
+                    <th>DEPARTEMENT NAME</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>EMAIL</th>
+                    <th>ID Request</th>
+                    <th>Status</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th style="width: 300px;">Action</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>No</th>
+                    <th>NIK</th>
+                    <th>DEPARTEMENT NAME</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>EMAIL</th>
+                    <th>ID Request</th>
+                    <th>Status</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th style="width: 300px;">Action</th>
+                </tr>
+            </tfoot>
+        </table>
     </div>
+</div>
 
-    <div class="row">
+<section>
+    <canvas id="myChart" width="400" height="400"></canvas>
+</section>
 
-        <div class="col-xl-4 col-lg-5">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Gender Ratio</h6>
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                             aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header">Dropdown Header:</div>
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <div class="chart-pie pt-4 pb-2">
-                        <canvas id="myPieChart"></canvas>
-                    </div>
-                    <div class="mt-4 text-center small">
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-primary"></i> Men
-                        </span>
-                        <span class="mr-2">
-                            <i class="fas fa-circle text-success"></i> Woman
-                        </span>
 
-                    </div>
-                </div>
+<!-- Button trigger modal -->
+<!--<button type="button" class="btn btn-primary tes" data-toggle="modal" data-target="#exampleModal">
+    Launch demo modal
+</button>-->
+<!-- Modal -->
+<div class="modal fade" id="detail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="text-transform:uppercase"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body-detail">
+                ...
+                <button></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="approve">Approve</button>
+                <button type="button" class="btn btn-danger" id="tolak">Tolak</button>
             </div>
         </div>
-
-        <!-- Project Card Example -->
-        <div class="card shadow mb-4 col-xl-8">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Leave Types</h6>
-            </div>
-            <div class="card-body">
-                <h4 class="small font-weight-bold">
-                    Normal Leave Type <span class="float-right" id="normalLeave"></span>
-                </h4>
-                <div class="progress mb-4">
-                    <div class="progress-bar bg-danger" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="normalLeaveBar"></div>
-                </div>
-                <h4 class="small font-weight-bold">
-                    Special Leave Type <span class="float-right" id="specialLeave"></span>
-                </h4>
-                <div class="progress mb-4">
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: 40%"
-                         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" id="specialLeaveBar"></div>
-                </div>
-                
-            </div>
-        </div>
-
     </div>
-
 </div>

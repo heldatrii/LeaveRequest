@@ -1,69 +1,106 @@
 ﻿@{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Home";
     Layout = "~/Views/Shared/_LayoutEmployee.cshtml";
 }
 
 
-<div class="container-fluid">
-    <h1>Dashboard</h1>
-    <div class="row">
+<h1>Ini Halaman Employee</h1>
 
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                Unprocessed Request
+<!-- Modal -->
+<div class="modal fade" id="addrequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 1000px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="crudModalLabel" style="text-transform:uppercase"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body-form">
+                @*<form class="needs-validation" id="form" action="javascript:addOrUpdate()">*@
+                <form class="needs-validation" id="form" action="javascript:addLeaveApply()">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="EmployeeId">NIK</label>
+                                <input type="text" class="form-control" id="NIK" placeholder="NIK" required />
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="unprocessed"></div>
+                            <div class="NIK"></div>
+                            <div class="form-group">
+                                <label for="Country">Start Date</label>
+                                <input type="date" class="form-control" id="StartDate" placeholder="Birth Date (yyyy-mm-dd)" required />
+                            </div>
+                            <div class="StartDate"></div>
+                            <div class="form-group">
+                                <label for="Country">End Date</label>
+                                <input type="date" class="form-control" id="EndDate" placeholder="Birth Date (yyyy-mm-dd)" required />
+                            </div>
+                            <div class="EndDate"></div>
+                            <div class="form-group">
+                                <label for="Country">Reason</label>
+                                @*<input type="text" class="form-control" id="GPA" placeholder="GPA" />*@
+                                <select class="form-control" name="Reason" id="IdType" placeholder="Reason"></select>
+                            </div>
+                            <div class="IdType"></div>
                         </div>
-                        <div class="col-auto">
-                            <i class="fas fa-clock fa-2x text-gray-300"></i>
-                        </div>
+
                     </div>
-                </div>
+
+
+                    <input type="submit" value="add" id="btnAdd" class="form-control formButton" name="add" placeholder="Add" />
+                    <input type="submit" value="update" id="btnUpdate" style="display:none;" class="form-control formButton" name="update" placeholder="Add" />
+                    @*<input class="form-control" name="Submit" type="submit" value="Update"/>*@
+                    @*<button type="submit" class="btn btn-primary" form="form" id="btnAdd" onclick="return Add();">Submit</button>*@
+                </form>
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-primary" form="form" id="btnAdd" onclick="return Add();">Add</button>*@
+                @*<button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>*@
+
+                @*TIDAK TERPAKAI*@
+                @*<button type="submit" class="btn btn-primary" form="form" id="btnAdd" onclick="return Add();">Add</button>*@
+                @*<button type="submit" class="btn btn-primary" form="form" id="btnAdd">Add</button>*@
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                @*<button type="button" class="btn btn-primary">Save changes</button>*@
             </div>
         </div>
-
-        <!-- Earnings (Monthly) Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Approved Request
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="approvedReq"></div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-check fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pending Requests Card Example -->
-        <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-danger shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                Rejected Requests
-                            </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="rejected"></div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-times fa-2x text-gray-300"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 </div>
+
+
+<div class="container">
+    <div class="row">
+        <table id="apply" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Request ID</th>
+                    <th>NIK</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th style="width: 300px;">Action</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>No</th>
+                    <th>Request ID</th>
+                    <th>NIK</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th style="width: 300px;">Action</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<section>
+    @*NIK GANTI DARI SESSION*@
+    <button type="button" class="btn btn-primary" data-toggle="modal" onclick="clearTextBox('123453');">Apply Leave Request</button>
+</section>
+
+<section>
+    <canvas id="myChart" width="400" height="400"></canvas>
+</section>

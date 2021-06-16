@@ -1,19 +1,15 @@
 using CorseLeave.Base;
 using CorseLeave.Repository.Data;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CorseLeave
@@ -37,34 +33,13 @@ namespace CorseLeave
             services.AddScoped<LeaveAllowanceRepository>();
             services.AddScoped<PersonRepository>();
             services.AddScoped<RequestRepository>();
+            services.AddScoped<RequestStatusRepository>();
+            services.AddScoped<RequestTypeRepository>();
             services.AddScoped<RoleAccountRepository>();
             services.AddScoped<RoleRepository>();
             services.AddScoped<TypeRepository>();
             services.AddScoped<Address>();
-            //services.AddSession();
-            services.AddDistributedMemoryCache();
-            services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromSeconds(1000);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-            });
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = "http://localhost:44389",
-                    ValidAudience = "http://localhost:44389",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:secret"]))
-                };
-            });
-
-            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -87,24 +62,24 @@ namespace CorseLeave
 
             app.UseSession();
 
-            //app.Use(async (context, next) =>
-            //{
-            //    var JWToken = context.Session.GetString("JWToken");
-            //    if (!string.IsNullOrEmpty(JWToken))
-            //    {
-            //        context.Request.Headers.Add("Authorizatoin", "Bearer" + JWToken);
-            //    }
-            //    await next();
-            //});
+            app.Use(async (context, next) =>
+            {
+                var JWToken = context.Session.GetString("JWToken");
+                if (!string.IsNullOrEmpty(JWToken))
+                {
+                    context.Request.Headers.Add("Authorizatoin", "Bearer" + JWToken);
+                }
+                await next();
+            });
 
-            //app.UseAuthentication();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Landing}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

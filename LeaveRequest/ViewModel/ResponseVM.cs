@@ -8,7 +8,6 @@ namespace LeaveRequest.ViewModel
     public class ResponseVM
     {
         public string NIK { get; set; }
-        public int IdRequest { get; set; }
         public string Response { get; set; }
     }
 }
