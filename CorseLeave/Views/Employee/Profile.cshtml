@@ -1,0 +1,116 @@
+﻿@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_LayoutEmployee.cshtml";
+}
+
+
+<div class="container-fluid">
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h4 class="m-0 font-weight-bold text-primary">Profile</h4>
+        </div>
+        <div class="card-body">
+            <div style="margin-bottom: 2%;">
+                <table>
+                    <tr>
+                        <td>Sisa Jatah Cuti</td>
+                        <td>:</td>
+                        <td id="SisaJatahCuti"></td>
+                    </tr>
+                    <tr>
+                        <td>Jatah Cuti Terpakai</td>
+                        <td>:</td>
+                        <td id="JatahCutiTerpakai"></td>
+                    </tr>
+                </table>
+            </div>
+            <form class="needs-validation" id="form" action="javascript:updateProfile()">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="EmployeeId">NIK</label>
+                            <input type="text" class="form-control" id="NIKProfile" placeholder="NIK" required readonly />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Name">Username</label>
+                            <input type="text" class="form-control" id="UserNameProfile" placeholder="Username" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Name">First Name</label>
+                            <input type="text" class="form-control" id="FirstNameProfile" placeholder="First Name" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Age">Last Name</label>
+                            <input type="text" class="form-control" id="LastNameProfile" placeholder="Last Name" required />
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="State">Phone</label>
+                            <input type="text" class="form-control" id="PhoneProfile" placeholder="Phone" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Country">Birth Date</label>
+                            <input type="date" class="form-control" id="BirthDateProfile" placeholder="Birth Date (yyyy-mm-dd)" required readonly />
+                        </div>
+                        <div class="form-group">
+                            <label for="Country">Email</label>
+                            <input type="email" class="form-control" id="EmailProfile" placeholder="Email" required />
+                        </div>
+                        <div class="Email"></div>
+                        @*<div class="form-group" id="passwordDiv">
+                        <label for="Country">Passwrod</label>
+                        <input type="password" class="form-control" id="PasswordProfile" pattern="[a-zA-Z0-9]+" minlength="8" placeholder="Password" required />
+                    </div>*@
+
+                    </div>
+                    <input type="submit" value="Update" id="updateProfile" class="form-control formButton btn-success" name="updateProfile" placeholder="UpdateProfile" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<div class="container-fluid">
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4" style="width: 50%;">
+        <div class="card-header py-3">
+            <h4 class="m-0 font-weight-bold text-primary">Change Password</h4>
+        </div>
+        <div class="card-body">
+            <form class="needs-validation" id="form" action="javascript:changePassword()">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="EmployeeId">Current Password</label>
+                            <input type="password" class="form-control" id="currentPassword" pattern="[a-zA-Z0-9]+" minlength="8" placeholder="Current Password" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Name">New Password</label>
+                            <input type="password" class="form-control" id="newPassword" pattern="[a-zA-Z0-9]+" minlength="8" placeholder="New Password" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Name">Validate New Password</label>
+                            <input type="password" class="form-control" id="vNewPassword" pattern="[a-zA-Z0-9]+" minlength="8" placeholder="Re-Type New Password" required />
+                        </div>
+                        <div id="ValidateWarn"></div>
+
+                    </div>
+
+                    <input type="submit" value="Change Password" id="changePassword" class="form-control formButton btn-success" name="changePassword" placeholder="changePassword" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

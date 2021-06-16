@@ -17,8 +17,6 @@ namespace LeaveRequest.Context
         public DbSet<LeaveAllowance> LeaveAllowances { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<Request> Requests { get; set; }
-        public DbSet<RequestStatus> RequestStatuses { get; set; }
-        public DbSet<RequestType> RequestTypes { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<RoleAccount> RoleAccounts { get; set; }
         public DbSet<Tipe> Tipes { get; set; }
@@ -35,30 +33,6 @@ namespace LeaveRequest.Context
                 .HasOne(ra => ra.Role)
                 .WithMany(r => r.RoleAccounts)
                 .HasForeignKey(ra => ra.IdRole);
-
-            //request ke tipe many to many 
-            modelBuilder.Entity<RequestType>()
-                .HasKey(rt => new { rt.IdRequest, rt.IdType });
-            modelBuilder.Entity<RequestType>()
-                .HasOne(rt => rt.Request)
-                .WithMany(b => b.RequestTypes)
-                .HasForeignKey(rt => rt.IdType);
-            modelBuilder.Entity<RequestType>()
-                .HasOne(rt => rt.Tipe)
-                .WithMany(b => b.RequestTypes)
-                .HasForeignKey(rt => rt.IdType);
-            
-            //person ke request many to many 
-            modelBuilder.Entity<RequestStatus>()
-                .HasKey(rt => new { rt.IdRequest, rt.NIK });
-            modelBuilder.Entity<RequestStatus>()
-                .HasOne(rt => rt.Person)
-                .WithMany(b => b.RequestStatuses)
-                .HasForeignKey(rt => rt.NIK);
-            modelBuilder.Entity<RequestStatus>()
-                .HasOne(rt => rt.Request)
-                .WithMany(b => b.RequestStatuses)
-                .HasForeignKey(rt => rt.IdRequest);
 
             //selfjoin
             modelBuilder.Entity<Person>()

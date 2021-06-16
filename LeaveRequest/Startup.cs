@@ -61,8 +61,6 @@ namespace LeaveRequest
             services.AddScoped<LeaveAllowanceRepository>();
             services.AddScoped<PersonRepository>();
             services.AddScoped<RequestRepository>();
-            services.AddScoped<RequestStatusRepository>();
-            services.AddScoped<RequestTypeRepository>();
             services.AddScoped<RoleAccountRepository>();
             services.AddScoped<RoleRepository>();
             services.AddScoped<TipeRepository>();

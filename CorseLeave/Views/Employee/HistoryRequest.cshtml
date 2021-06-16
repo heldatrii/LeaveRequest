@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "History Request";
+    Layout = "~/Views/Shared/_LayoutEmployee.cshtml";
+}
+
+
+
+<div class="container-fluid">
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h4 class="m-0 font-weight-bold text-primary">Apply List History</h4>
+        </div>
+        <div class="card-body">
+
+            <div style="margin-bottom: 2%;">
+                <table>
+                    <tr>
+                        <td>Sisa Jatah Cuti</td>
+                        <td>:</td>
+                        <td id="SisaJatahCuti"></td>
+                    </tr>
+                    <tr>
+                        <td>Jatah Cuti Terpakai</td>
+                        <td>:</td>
+                        <td id="JatahCutiTerpakai"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered" id="applyHistory" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;">No</th>
+                            <th style="text-align: center;">Request ID</th>
+                            <th style="text-align: center;">NIK</th>
+                            <th style="text-align: center;">Start Date</th>
+                            <th style="text-align: center;">End Date</th>
+                            <th style="text-align: center;">Reason</th>
+                            <th style="text-align: center;">Status</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th style="text-align: center;">No</th>
+                            <th style="text-align: center;">Request ID</th>
+                            <th style="text-align: center;">NIK</th>
+                            <th style="text-align: center;">Start Date</th>
+                            <th style="text-align: center;">End Date</th>
+                            <th style="text-align: center;">Reason</th>
+                            <th style="text-align: center;">Status</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

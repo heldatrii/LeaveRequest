@@ -30,6 +30,7 @@ namespace LeaveRequest.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         public DateTime BirthDate { get; set; }
+        public string Gender { get; set; }
         public string Phone { get; set; }
         [JsonIgnore]
         public virtual ICollection<Person> subPerson { get; set; }
@@ -38,6 +39,6 @@ namespace LeaveRequest.Models
         [JsonIgnore]
         public virtual LeaveAllowance LeaveAllowance { get; set; }
         [JsonIgnore]
-        public virtual ICollection<RequestStatus> RequestStatuses{ get; set; }
+        public virtual ICollection<Request> Requests{ get; set; }
     }
 }
