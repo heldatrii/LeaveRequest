@@ -12,11 +12,12 @@ namespace LeaveRequest.Models
     public class Tipe
     {
         [Key]
-        public int Id { get; set; }
+        public int TipeId { get; set; }
         public string NameTipe { get; set; }
+        public string TypeKind { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<RequestType> RequestTypes { get; set; }
+        public virtual ICollection<Request> Requests { get; set; }
 
     }
 }

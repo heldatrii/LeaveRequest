@@ -7,6 +7,6 @@ namespace CorseLeave.Base
 {
     public class Address
     {
-        public string link = "https://localhost:44313/api/";
+        public string link = "https://localhost:44313/API/";
     }
 }

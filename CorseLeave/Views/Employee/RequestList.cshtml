@@ -1,0 +1,133 @@
+﻿@{
+    ViewData["Title"] = "Request List";
+    Layout = "~/Views/Shared/_LayoutEmployee.cshtml";
+}
+
+<!-- Modal -->
+<div class="modal fade" id="addrequest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="crudModalLabel" style="text-transform:uppercase"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body-form">
+                @*<form class="needs-validation" id="form" action="javascript:addOrUpdate()">*@
+                <form class="needs-validation" id="form" action="javascript:addLeaveApply()">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @*<label for="EmployeeId">NIK</label>*@
+                                <input type="text" class="form-control" id="NIK" placeholder="NIK" required hidden />
+                            </div>
+
+                            @*<div class="form-group">
+                                    <label for="Country">Start Date</label>
+                                    <input type="date" class="form-control" id="StartDate" placeholder="Birth Date (yyyy-mm-dd)" required />
+                                </div>
+                                <div class="StartDate"></div>
+                                <div class="form-group">
+                                    <label for="Country">End Date</label>
+                                    <input type="date" class="form-control" id="EndDate" placeholder="Birth Date (yyyy-mm-dd)" required />
+                                </div>*@
+                            <div class="form-group">
+                                <label for="Country">Select Date</label>
+                                @*<input type="text" name="daterange" id="daterange" value="" />*@
+                                <input type="text" class="form-control" name="daterange" id="daterange" value="" required />
+                            </div>
+                            <div class="EndDate"></div>
+                            <div class="form-group">
+                                <label for="Country">Reason</label>
+                                @*<input type="text" class="form-control" id="GPA" placeholder="GPA" />*@
+                                <select class="form-control" name="Reason" id="IdType" placeholder="Reason"></select>
+                            </div>
+                            <div class="IdType"></div>
+                        </div>
+
+                    </div>
+
+
+                    <input type="submit" value="add" id="btnAdd" class="form-control formButton" name="add" placeholder="Add" />
+                    <input type="submit" value="update" id="btnUpdate" style="display:none;" class="form-control formButton" name="update" placeholder="Add" />
+                    @*<input class="form-control" name="Submit" type="submit" value="Update"/>*@
+                    @*<button type="submit" class="btn btn-primary" form="form" id="btnAdd" onclick="return Add();">Submit</button>*@
+                </form>
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-primary" form="form" id="btnAdd" onclick="return Add();">Add</button>*@
+                @*<button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>*@
+
+                @*TIDAK TERPAKAI*@
+                @*<button type="submit" class="btn btn-primary" form="form" id="btnAdd" onclick="return Add();">Add</button>*@
+                @*<button type="submit" class="btn btn-primary" form="form" id="btnAdd">Add</button>*@
+                @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>*@
+                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="container-fluid">
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h4 class="m-0 font-weight-bold text-primary">Apply List</h4>
+            </div>
+            <div class="card-body">
+
+                <div style="margin-bottom: 2%;">
+                    <table>
+                        <tr>
+                            <td>Sisa Jatah Cuti</td>
+                            <td>:</td>
+                            <td id="SisaJatahCuti"></td>
+                        </tr>
+                        <tr>
+                            <td>Jatah Cuti Terpakai</td>
+                            <td>:</td>
+                            <td id="JatahCutiTerpakai"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <button type="button" class="btn btn-primary float-right" data-toggle="modal" onclick="box();" style="margin-bottom: 5px;">Apply Leave Request</button>
+                <div class="table-responsive">
+                    <table id="apply" class="table table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">No</th>
+                                <th style="text-align: center;">Request ID</th>
+                                <th style="text-align: center;">NIK</th>
+                                <th style="text-align: center;">Start Date</th>
+                                <th style="text-align: center;">End Date</th>
+                                <th style="text-align: center;">Reason</th>
+                                <th style="text-align: center;">Status</th>
+                                @*<th style="width: 300px;">Action</th>*@
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th style="text-align: center;">No</th>
+                                <th style="text-align: center;">Request ID</thstyle="text-align:>
+                                <th style="text-align: center;">NIK</th>
+                                <th style="text-align: center;">Start Date</th>
+                                <th style="text-align: center;">End Date</th>
+                                <th style="text-align: center;">Reason</th>
+                                <th style="text-align: center;">Status</th>
+                                @*<th style="width: 300px;">Action</th>*@
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <section>
+        <canvas id="myChart" width="400" height="400"></canvas>
+    </section>
+
