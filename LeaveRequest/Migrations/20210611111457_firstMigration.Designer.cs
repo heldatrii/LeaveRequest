@@ -10,7 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LeaveRequest.Migrations
 {
     [DbContext(typeof(MyContext))]
+<<<<<<< HEAD:LeaveRequest/Migrations/20210611111457_firstMigration.Designer.cs
     [Migration("20210611111457_firstMigration")]
+=======
+    [Migration("20210531040911_firstMigration")]
+>>>>>>> bc8506cb743206f2e41d1ad48946b1ebf1bcd778:LeaveRequest/Migrations/20210531040911_firstMigration.Designer.cs
     partial class firstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,8 +27,8 @@ namespace LeaveRequest.Migrations
 
             modelBuilder.Entity("LeaveRequest.Models.Account", b =>
                 {
-                    b.Property<string>("NIK")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("NIK")
+                        .HasColumnType("int");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
@@ -51,8 +55,8 @@ namespace LeaveRequest.Migrations
 
             modelBuilder.Entity("LeaveRequest.Models.LeaveAllowance", b =>
                 {
-                    b.Property<string>("NIK")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("NIK")
+                        .HasColumnType("int");
 
                     b.Property<int>("LeaveAllow")
                         .HasColumnType("int");
@@ -67,9 +71,10 @@ namespace LeaveRequest.Migrations
 
             modelBuilder.Entity("LeaveRequest.Models.Person", b =>
                 {
-                    b.Property<string>("NIK")
+                    b.Property<int>("NIK")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
@@ -89,8 +94,8 @@ namespace LeaveRequest.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ManagerId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("ManagerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
@@ -120,7 +125,14 @@ namespace LeaveRequest.Migrations
                     b.Property<int>("IsDeleted")
                         .HasColumnType("int");
 
+<<<<<<< HEAD:LeaveRequest/Migrations/20210611111457_firstMigration.Designer.cs
                     b.Property<string>("NIK")
+=======
+                    b.Property<int>("NIK")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+>>>>>>> bc8506cb743206f2e41d1ad48946b1ebf1bcd778:LeaveRequest/Migrations/20210531040911_firstMigration.Designer.cs
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PersonNIK")
@@ -161,8 +173,8 @@ namespace LeaveRequest.Migrations
 
             modelBuilder.Entity("LeaveRequest.Models.RoleAccount", b =>
                 {
-                    b.Property<string>("NIK")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("NIK")
+                        .HasColumnType("int");
 
                     b.Property<int>("IdRole")
                         .HasColumnType("int");

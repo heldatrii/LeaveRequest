@@ -10,13 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LeaveRequest.Migrations
 {
     [DbContext(typeof(MyContext))]
-<<<<<<< HEAD:LeaveRequest/Migrations/20210611111724_AddFKInRequest.Designer.cs
-    [Migration("20210611111724_AddFKInRequest")]
-    partial class AddFKInRequest
-=======
-    [Migration("20210604025103_changeIDAttributName")]
-    partial class changeIDAttributName
->>>>>>> bc8506cb743206f2e41d1ad48946b1ebf1bcd778:LeaveRequest/Migrations/20210604025103_changeIDAttributName.Designer.cs
+    [Migration("20210604040000_changeIdRequestToRequestId")]
+    partial class changeIdRequestToRequestId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -122,9 +117,9 @@ namespace LeaveRequest.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-<<<<<<< HEAD:LeaveRequest/Migrations/20210611111724_AddFKInRequest.Designer.cs
                     b.Property<int>("IsDeleted")
-=======
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
@@ -136,26 +131,14 @@ namespace LeaveRequest.Migrations
             modelBuilder.Entity("LeaveRequest.Models.RequestStatus", b =>
                 {
                     b.Property<int>("RequestId")
->>>>>>> bc8506cb743206f2e41d1ad48946b1ebf1bcd778:LeaveRequest/Migrations/20210604025103_changeIDAttributName.Designer.cs
                         .HasColumnType("int");
 
                     b.Property<string>("NIK")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-<<<<<<< HEAD:LeaveRequest/Migrations/20210611111724_AddFKInRequest.Designer.cs
-                    b.Property<int>("TipeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RequestId");
-
-                    b.HasIndex("NIK");
-=======
                     b.HasKey("RequestId", "NIK");
 
                     b.HasIndex("NIK");
@@ -165,18 +148,17 @@ namespace LeaveRequest.Migrations
 
             modelBuilder.Entity("LeaveRequest.Models.RequestType", b =>
                 {
-                    b.Property<int>("IdRequest")
+                    b.Property<int>("RequestId")
                         .HasColumnType("int");
 
                     b.Property<int>("TipeId")
                         .HasColumnType("int");
 
-                    b.HasKey("IdRequest", "TipeId");
->>>>>>> bc8506cb743206f2e41d1ad48946b1ebf1bcd778:LeaveRequest/Migrations/20210604025103_changeIDAttributName.Designer.cs
+                    b.HasKey("RequestId", "TipeId");
 
                     b.HasIndex("TipeId");
 
-                    b.ToTable("tb_m_request");
+                    b.ToTable("tb_m_requestType");
                 });
 
             modelBuilder.Entity("LeaveRequest.Models.Role", b =>
@@ -219,12 +201,6 @@ namespace LeaveRequest.Migrations
                     b.Property<string>("NameTipe")
                         .HasColumnType("nvarchar(max)");
 
-<<<<<<< HEAD:LeaveRequest/Migrations/20210611111724_AddFKInRequest.Designer.cs
-                    b.Property<string>("TypeKind")
-                        .HasColumnType("nvarchar(max)");
-
-=======
->>>>>>> bc8506cb743206f2e41d1ad48946b1ebf1bcd778:LeaveRequest/Migrations/20210604025103_changeIDAttributName.Designer.cs
                     b.HasKey("TipeId");
 
                     b.ToTable("tb_m_tipe");
@@ -261,16 +237,9 @@ namespace LeaveRequest.Migrations
                         .HasForeignKey("ManagerId");
                 });
 
-            modelBuilder.Entity("LeaveRequest.Models.Request", b =>
+            modelBuilder.Entity("LeaveRequest.Models.RequestStatus", b =>
                 {
                     b.HasOne("LeaveRequest.Models.Person", "Person")
-<<<<<<< HEAD:LeaveRequest/Migrations/20210611111724_AddFKInRequest.Designer.cs
-                        .WithMany("Requests")
-                        .HasForeignKey("NIK");
-
-                    b.HasOne("LeaveRequest.Models.Tipe", "Tipe")
-                        .WithMany("Requests")
-=======
                         .WithMany("RequestStatuses")
                         .HasForeignKey("NIK")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -293,7 +262,6 @@ namespace LeaveRequest.Migrations
 
                     b.HasOne("LeaveRequest.Models.Tipe", "Tipe")
                         .WithMany("RequestTypes")
->>>>>>> bc8506cb743206f2e41d1ad48946b1ebf1bcd778:LeaveRequest/Migrations/20210604025103_changeIDAttributName.Designer.cs
                         .HasForeignKey("TipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
